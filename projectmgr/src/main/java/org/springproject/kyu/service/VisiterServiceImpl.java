@@ -103,7 +103,7 @@ public class VisiterServiceImpl implements VisiterService {
 				try {
 					return visiterDao.selectByEmail(email);
 				} catch (EmptyResultDataAccessException e) {
-					logger.error("결과값 없음 | {}", e.toString());
+					logger.error("방문자 email 일치하는 데이터 없음 | {}", e.toString());
 
 				} catch (Exception e) {
 					logger.error("{}", e.toString());
@@ -155,8 +155,6 @@ public class VisiterServiceImpl implements VisiterService {
 					password = visiter.getPassword();
 				}
 				
-				//< 업로드 테스트 
-
 				visiterDao.updateInfo(visiter.getEmail(), password, data.getOrganization(), fileId);
 				logger.info("회원정보 수정 성공 | {} | {}", ip, data.getEmail());
 				
