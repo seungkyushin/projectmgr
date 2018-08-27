@@ -155,6 +155,7 @@ public class VisiterServiceImpl implements VisiterService {
 					password = visiter.getPassword();
 				}
 				
+				//< 업로드 테스트 
 
 				visiterDao.updateInfo(visiter.getEmail(), password, data.getOrganization(), fileId);
 				logger.info("회원정보 수정 성공 | {} | {}", ip, data.getEmail());
