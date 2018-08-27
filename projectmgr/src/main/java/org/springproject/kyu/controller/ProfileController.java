@@ -83,13 +83,13 @@ public class ProfileController {
 		
 		int resultVisiter = visiterService.updateVisiter(visiter, file, ip);
 
-		/*if( resultVisiter == VisiterService.SUCCESS) {
+		if( resultVisiter == VisiterService.SUCCESS) {
 			message = "회원 정보가 정상적으로 수정되었습니다.";
 			viewName = "main";
-		}else {*/
+		}else {
 			message = "회원 정보 수정에 실패 하였습니다.";
 			viewName = "redirect:profile";
-		//}
+		}
 			
 		req.setAttribute("resultMsg", message);
 		return viewName;

@@ -12,7 +12,7 @@
 	</h1>
 	<nav id="nav">
 		<ul>
-			<li><a href="./description">설명</a></li>
+			<li><a href="#SikllStack">설명</a></li>
 			<li>
 				<a href="#">프로젝트</a>
 				<ul id="nav-projectList">

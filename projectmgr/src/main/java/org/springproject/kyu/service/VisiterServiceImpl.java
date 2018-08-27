@@ -1,5 +1,6 @@
 package org.springproject.kyu.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -129,25 +130,18 @@ public class VisiterServiceImpl implements VisiterService {
 		if ( data == null || ip == null || ip.isEmpty() ) {
 			return FAILED;
 		}
-
-			/*
-			 * 1. 파일 upload 수행 -> 실패시 error 반환 성공시 fileInfo db에 insert
-			 * 2. insert 수행 -> 실패시 upload 파일 삭제 성공시 visiter 정보 변경
-			 * 3. visiter 정보 변경 수행 -> password는 등록시 변경, origain 등록시 변경, file 업로드 했으면
-			 * 파일정보 갱신 실패시 1,2,3 롤백
-			 * */
 			
 			try {
 				VisiterDto visiter = visiterDao.selectByEmail(data.getEmail());
-				
-				//< fileid 갱신
-				int fileId = 0;
+				int updateFileId = visiter.getFileId();
+				int beforFileId = updateFileId;
+					
+				//< 사용자가 선택한 이미지 파일 업로드 및 db 갱신
 				if( file.getSize() > 0 || file.getOriginalFilename().isEmpty() == false ) {
-					fileId = this.uploadImage(file, data.getEmail(), ip);
-				}else {
-					fileId = visiter.getFileId();
+					updateFileId = this.uploadImage(file, data.getEmail(), ip);
 				}
-				
+					
+				//< 패스워드 값 있으면 해당값으로 변경
 				String password = "";
 				if( data.getPassword() != null && data.getPassword().isEmpty() == false) {
 					password = Encryption.SHA512(data.getPassword());
@@ -155,7 +149,23 @@ public class VisiterServiceImpl implements VisiterService {
 					password = visiter.getPassword();
 				}
 				
-				visiterDao.updateInfo(visiter.getEmail(), password, data.getOrganization(), fileId);
+				//< 회원 정보 수정
+				visiterDao.updateInfo(visiter.getEmail(), password, data.getOrganization(), updateFileId);
+				
+								
+				//< 회원 정보 수정 완료 후 프로파일 이미지 삭제 
+				//< 이전 이미지가 default 이미지가 아니라면 해당 파일삭제 및 DB 데이터 삭제
+				if( beforFileId != 4 ) {
+					FileInfoDto fileInfo = fileInfoDao.selectById(beforFileId);
+					String filePath = fileInfo.getSavePath() + "\\" +  fileInfo.getName();
+					if( this.delectImage(filePath, data.getEmail(), ip) == SUCCESS) {
+						//< 파일삭제 성공 후 db 삭제
+						int result = fileInfoDao.delete(fileInfo.getId());
+						System.out.println("delete file id " + result);
+					}
+				}
+				
+				
 				logger.info("회원정보 수정 성공 | {} | {}", ip, data.getEmail());
 				
 			} catch (EmptyResultDataAccessException e) {
@@ -180,41 +190,64 @@ public class VisiterServiceImpl implements VisiterService {
 
 	@Override
 	public int uploadImage(MultipartFile file, String email, String ip) {
-
-		System.out.println("파일 이름 : " + file.getOriginalFilename());
-		System.out.println("파일 크기 : " + file.getSize());
-		
 		
 		int randomName = new Date().hashCode();
 	    int index = file.getOriginalFilename().lastIndexOf(".");
       	String fileNameExtension =  file.getOriginalFilename().substring(index + 1);
 		String fileName = randomName + "." +fileNameExtension;
-		String filePath = "C:/Users/kyu/git/projectmgr/projectmgr/src/main/webapp/images/upload/" + fileName;
-        String savePath = "images/upload/" + fileName;
+		//String filePath = "C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images\\upload\\";
+		String filePath = "C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images\\upload\\";
+		String fullFilePath = filePath + "\\" + fileName;
+		String urlPath = "images/upload/" + fileName;
+        
 		try(
         	
-                FileOutputStream fos = new FileOutputStream(filePath);
-                InputStream is = file.getInputStream();
-        ){
+              FileOutputStream fos = new FileOutputStream(fullFilePath);
+              InputStream is = file.getInputStream();
+			){
         	    int readCount = 0;
         	    byte[] buffer = new byte[1024];
-            while((readCount = is.read(buffer)) != -1){
-                fos.write(buffer,0,readCount);
+        	    
+        	    while((readCount = is.read(buffer)) != -1){
+        	    	fos.write(buffer,0,readCount);
             }
         }catch(Exception ex){
         	logger.error("파일 업로드 실패 | {} | {} | {}", ip, email, ex.toString());
             return FAILED;
         }
         
-        logger.error("파일 업로드 성공 | {} | {} | {}", ip, email, filePath);
+        logger.error("파일 업로드 성공 | {} | {} | {}", ip, email, fullFilePath);
         
         FileInfoDto fileInfo = new FileInfoDto();
-        fileInfo.setSavePath(savePath);
+        fileInfo.setSavePath(filePath);
+        fileInfo.setUrlPath(urlPath);
         fileInfo.setType(file.getContentType());
         fileInfo.setName(fileName);
         fileInfo.setCreateDate(dateFormat.format(new Date()));
           
         return fileInfoDao.insert(fileInfo);
+	}
+
+	@Override
+	public int delectImage(String filePath, String email, String ip) {
+		
+		 File file = new File(filePath);
+         
+	        if( file.exists() ){ //파일존재여부확인
+	           if(file.delete()){
+	        	   logger.info("파일 삭제 성공 | {} | {} | {}", ip, email , filePath);
+	        	   return SUCCESS;
+                }else{
+                   logger.info("파일 삭제 실패 | {} | {} | {}", ip, email , filePath);
+                   return FAILED;
+                }
+	             
+	        }else{
+	        	logger.info("파일이 존재하지 않습니다. | {} | {} | {}", ip, email , filePath);
+	        	return FAILED;
+	        }
+	             
+		
 	}
 
 }

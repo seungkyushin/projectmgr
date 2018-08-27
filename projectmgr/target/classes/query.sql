@@ -6,7 +6,8 @@ Use projectmgr_db;
 
 
 create table file_info(id int primary key auto_increment, 
-save_path text NOT NULL, 
+save_path text NOT NULL,
+url_path text NOT NULL,
 type varchar(50) NOT NULL, 
 name varchar(100) NOT NULL, 
 create_date datetime  
@@ -66,10 +67,25 @@ type varchar(50)  NOT NULL
 
 Use projectmgr_db; 
 
-INSERT INTO file_info(save_path,type,name,create_date) VALUES('images/todo.gif','image', 'todo', now()); 
-INSERT INTO file_info(save_path,type,name,create_date) VALUES('images/naver.gif','image', 'naver', now()); 
-INSERT INTO file_info(save_path,type,name,create_date) VALUES('images/movie.png','image', 'move', now()); 
-INSERT INTO file_info(save_path,type,name,create_date) VALUES('images/upload/defaultImage.jpg','image', 'defaultImage', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date)
+VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/todo.gif','image/gif', 'todo.gif', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date) 
+VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/naver.gif','image/gif', 'naver.gif', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date) 
+VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/movie.png','image/png', 'move.png', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date) 
+VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/upload/defaultImage.jpg','image/jpg', 'defaultImage.jpg', now()); 
+
+
+INSERT INTO file_info(save_path,url_path,type,name,create_date)
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/todo.gif', 'image/gif', 'todo.gif', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date) 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/naver.gif','image/gif', 'naver.gif', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date) 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/movie.png','image/png', 'move.png', now()); 
+INSERT INTO file_info(save_path,url_path,type,name,create_date) 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/upload/defaultImage.jpg','image/jpg', 'defaultImage.jpg', now()); 
+
 
 
 INSERT INTO project(name, url, sub_description, description, file_id) VALUES('TODO LIST','http://localhost:8080/Todo/main.jsp', '해야할 일을 등록하고 관리합니다.', 'MYSQL DB에 연결하여 입력한 데이터를 저장하고 AJAX를 통해 화면 갱신없이 DATA를 갱신하는 부분을 연습했습니다.',1);  

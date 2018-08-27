@@ -38,7 +38,7 @@ public class ProjectServiceImpl implements ProjectService{
 			pramMap.put("url", data.getUrl());
 			
 			FileInfoDto fileInfoDto = fileInfoDao.selectById(data.getFileId());
-			pramMap.put("image", fileInfoDto.getSavePath());
+			pramMap.put("image", fileInfoDto.getUrlPath());
 			
 			resultList.add(pramMap);
 		}
@@ -58,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService{
 			result.put("url", projectDto.getUrl());
 			
 			FileInfoDto fileInfoDto = fileInfoDao.selectById(projectDto.getFileId());
-			result.put("image", fileInfoDto.getSavePath());
+			result.put("image", fileInfoDto.getUrlPath());
 		
 		return result;
 	}

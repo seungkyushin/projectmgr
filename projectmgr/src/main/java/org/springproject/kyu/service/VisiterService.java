@@ -19,4 +19,5 @@ public interface VisiterService {
 	public VisiterDto checkLogin(String email, String password, String ip);
 	public boolean checkPassword(String newPwd ,String originalPwd);
 	public int uploadImage(MultipartFile file, String email, String ip);
+	public int delectImage(String filePath, String email, String ip);
 }

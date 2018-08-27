@@ -48,7 +48,7 @@
 
 							<span onclick=document.all.file.click();
 								class="image animated bounce infinite"> <img
-								src="${fileInfo.savePath}" id="profileImage" alt="" />
+								src="${fileInfo.urlPath}" id="profileImage" alt="" />
 								
 							</span>
 							

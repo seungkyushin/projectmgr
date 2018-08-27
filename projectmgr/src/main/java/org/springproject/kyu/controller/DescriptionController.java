@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class DescriptionController {
 
-	@GetMapping(path="/description")
-	public String showPage() {
-		return "description";
-	}
-	
 	@GetMapping(path="/descriptionProject")
 	public String showDescriptionProjectPage(@RequestParam(name="id") int projectId,
 			ModelMap modelMap) {

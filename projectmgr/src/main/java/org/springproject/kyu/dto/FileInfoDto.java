@@ -4,6 +4,7 @@ public class FileInfoDto {
 	
 	private int id;
 	private String savePath;
+	private String urlPath;
 	private String type;
 	private String name;
 	private String createDate;
@@ -18,6 +19,12 @@ public class FileInfoDto {
 	}
 	public void setSavePath(String savePath) {
 		this.savePath = savePath;
+	}
+	public String getUrlPath() {
+		return urlPath;
+	}
+	public void setUrlPath(String urlPath) {
+		this.urlPath = urlPath;
 	}
 	public String getType() {
 		return type;
@@ -39,9 +46,10 @@ public class FileInfoDto {
 	}
 	@Override
 	public String toString() {
-		return "FileInfo [id=" + id + ", savePath=" + savePath + ", type=" + type + ", name=" + name + ", createDate="
-				+ createDate + "]";
+		return "FileInfoDto [id=" + id + ", savePath=" + savePath + ", urlPath=" + urlPath + ", type=" + type
+				+ ", name=" + name + ", createDate=" + createDate + "]";
 	}
+
 	
 
 }

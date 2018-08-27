@@ -41,5 +41,10 @@ public class FileInfoDao {
 		return insertAction.executeAndReturnKey(params).intValue();
 		
 	}
+	public int delete(int id) {
+		Map<String,Integer> paramMap = new HashMap<>();
+		paramMap.put("id", id);
+		return jdbc.update("DELETE FROM file_info WHERE id =:id", paramMap);
+	}
 
 }
