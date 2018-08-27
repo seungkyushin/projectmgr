@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="30 seconds">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%-5level] %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SERVER_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/logs/server.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/logs/backups/server_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%-5level] %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="MY_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/logs/my.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/logs/backups/my_%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <Pattern>%d{HH:mm:ss} [%-5level] %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+    
+ 
+<logger name="org.springframework" level="info">
+</logger>
+
+<logger name="org.springproject.kyu" level="info">
+	 <appender-ref ref="MY_LOG_FILE"/>
+</logger>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="SERVER_LOG_FILE"/>
+     </root>
+</configuration>
+
