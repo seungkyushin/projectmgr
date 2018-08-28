@@ -87,7 +87,12 @@ public class VisiterServiceImpl implements VisiterService {
 
 		if (visiter != null && checkPassword(password, visiter.getPassword()) == true) {
 			// < 마지막 로그인 갱신
-			visiterDao.updateLastLoginTime(visiter.getEmail(), dateFormat.format(new Date()));
+			try {
+				visiterDao.updateLastLoginTime(visiter.getEmail(), dateFormat.format(new Date()));
+			} catch (SQLException e) {
+				logger.info("로그인 실패 | {} | {} | {}", ip, visiter.getEmail(), e.toString());
+				return null;
+			}
 			logger.info("로그인 성공 | {} | {}", ip, visiter.getEmail());
 			return visiter;
 		}
@@ -103,6 +108,7 @@ public class VisiterServiceImpl implements VisiterService {
 			if (visiterDao != null)
 				try {
 					return visiterDao.selectByEmail(email);
+					//return visiterDao.selectByEmail(email);
 				} catch (EmptyResultDataAccessException e) {
 					logger.error("방문자 email 일치하는 데이터 없음 | {}", e.toString());
 
@@ -132,7 +138,7 @@ public class VisiterServiceImpl implements VisiterService {
 		}
 			
 			try {
-				VisiterDto visiter = visiterDao.selectByEmail(data.getEmail());
+				VisiterDto visiter = this.getVisiter(data.getEmail());
 				int updateFileId = visiter.getFileId();
 				int beforFileId = updateFileId;
 					

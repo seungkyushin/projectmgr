@@ -17,6 +17,10 @@ import org.springproject.kyu.interceptor.AuthenticationInterceptor;
 import org.springproject.kyu.interceptor.PageUtilInterceptor;
 
 
+/*
+ * Spring 프레임워크의 어노 테이션 기반 트랜잭션 관리를 사용할 수 있도록 한다.
+ * <tx:annotation-driven>
+ */
 @Configuration
 @EnableWebMvc //<DispatcherServlet의 RequestMappingHandlerMapping, RequestMappingHandlerAdapter, ExceptionHandlerExceptionResolver, MessageConverter 등 Web에 필요한 빈들을 대부분 자동으로 설정해준다.
 @ComponentScan(basePackages = { "org.springproject.kyu.controller" })
