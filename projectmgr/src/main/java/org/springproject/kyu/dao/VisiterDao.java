@@ -24,7 +24,7 @@ public class VisiterDao {
 	 private String namesapce = "org.springproject.kyu.mapper.VisiterMapper";
 	 
 	 public List<VisiterDto> selectAll() throws SQLException, EmptyResultDataAccessException{
-		  return visiterMapper.getAllList();
+		  return sqlSession.selectList(namesapce + ".getAllList");
 	 }
 	 	    
 	 public VisiterDto selectByEmail(String email) throws EmptyResultDataAccessException, Exception{
@@ -32,25 +32,25 @@ public class VisiterDao {
 	 } 
 	 
 	 public VisiterDto selectById(int id) throws EmptyResultDataAccessException{
-		 return visiterMapper.getById(id);
+		 return sqlSession.selectOne(namesapce + ".getById",id);
 	 }
 	 
 	 //< 리턴값은 등록된 ID 값
 	 public int insert(VisiterDto data) throws SQLException, DuplicateKeyException{
-		 return visiterMapper.add(data);
+		 return sqlSession.insert(namesapce + ".add", data);
 	 }
 	 
 	 public int delete(String email) throws SQLException{
-		 return visiterMapper.removeByEmail(email);
+		 return sqlSession.delete(namesapce + ".removeByEmail", email);
 	 }
 	 
-	 public int updateLastLoginTime(String email,String lastLoinDate) throws SQLException{
-		 return visiterMapper.updateLastLoginByEmail(email, lastLoinDate);
+	 public int updateLastLoginTime(VisiterDto data) throws SQLException{
+		 return sqlSession.update(namesapce + ".updateLastLoginByEmail", data);
 	 }
 	 
-	 public int updateInfo(String email, String password, String organization, int fileId) throws SQLException {
-		 return visiterMapper.updateInfoByEmail(password, organization, fileId, email);
-		 
+	 public int updateInfo(VisiterDto data) throws SQLException {
+		 return sqlSession.update(namesapce + ".updateInfoByEmail", data);
+
 	 }
 	 
 	/*  

@@ -11,21 +11,9 @@
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/popup.css"/>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-	
-	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	
-		<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/template.js"></script>
-	<script src="assets/js/handlebars.min.js"></script>
 	</head>
-	<body class="is-preload">
+	<!-- class="is-preload" -->
+	<body>
 		<div id="page-wrapper">
 			<%@ include file="/common/header.jsp" %>
 
@@ -42,7 +30,7 @@
 						<!-- Form -->
 							<section>
 				    				<form id="formData" method="post" action="./addvisiter">
-									<div class="row gtr-uniform gtr-50"></div>
+									<div class="row gtr-uniform gtr-50">
 
                                         <div class="col-4 col-12-xsmall"></div> 
 										<div class="col-4 col-12-xsmall">
@@ -85,6 +73,7 @@
 											<li><input type="button" id="sendBtn" class="button primary fit" value="가입"></li>
 											</ul>
             						</div>
+            					</div>
 								</form>
 							</section>
 					</div>
@@ -92,6 +81,17 @@
 				<%@ include file="/common/footer.jsp" %>
 		</div>
 		
+		<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/template.js"></script>
+	<script src="assets/js/handlebars.min.js"></script>
+	
 <script>
 		$(document).ready(function(){
 			//< 폼태그 애니메이션 설정
@@ -171,6 +171,8 @@
 			    });
 		}
 		</script>
+		
+		<%@ include file="/common/popup.jsp" %>
 </body>
 </html>
 

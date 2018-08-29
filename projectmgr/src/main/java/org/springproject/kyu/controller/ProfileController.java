@@ -109,8 +109,10 @@ public class ProfileController {
 			viewName = "redirect:main";
 		}else {
 			req.setAttribute("resultMsg", "계정 삭제에 실패했습니다.");
+			FileInfoDto fileInfo = fileInfoDao.selectById(visiter.getFileId());
 			visiter.setPassword("");
 			modelMap.addAttribute("visiter", visiter);
+			modelMap.addAttribute("fileInfo", fileInfo);
 			viewName = "profile";
 		}
 		

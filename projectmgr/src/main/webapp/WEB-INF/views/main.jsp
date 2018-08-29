@@ -10,26 +10,13 @@
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/popup.css"/>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-	
-	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	
-		<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/template.js"></script>
-	<script src="assets/js/handlebars.min.js"></script>
  </head>
-<body>
-<div id="main-page-wrapper"> 
-	<%@ include file="/common/header.jsp"%>
-		<div id="projectList-wrapper"class="content">
-			
- 			<!-- Banner -->
+ 
+<body class="is-preload landing">
+	<div id="page-wrapper"> 
+
+		<%@ include file="/common/header.jsp"%>
+		<!-- Banner -->
 				<section id="banner">
 					<div class="content">
 						<header>
@@ -67,16 +54,77 @@
 							</div>
 						</div>
 					</div>
-					<a href="#project-1" class="goto-next scrolly">Next</a>
+					<a href="#skill" class="goto-next scrolly">Next</a>
 				</section>
-			</div>
-	
+				
+				<!-- 프로젝트 리스트 -->
+				<div id="projectList-wrapper">
+				</div>
+				
+				<section id="skill" class="wrapper style1 special fade-up" >
+					<div class="container">
+						<header class="major">
+							<h2>Skill Stack</h2>
+							<p>프로젝트에 사용한 기술 및 언어</p>
+						</header>
+						<div class="box alt">
+							<div class="row gtr-uniform">
+								<section class="col-4 col-6-medium col-12-xsmall">
+									<span class="icon alt major fa-area-chart"></span>
+									<h3>MYSQL</h3>
+									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
+								</section>
+								<section class="col-4 col-6-medium col-12-xsmall">
+									<span class="icon alt major fa-comment"></span>
+									<h3>JSP</h3>
+									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
+								</section>
+								<section class="col-4 col-6-medium col-12-xsmall">
+									<span class="icon alt major fa-flask"></span>
+									<h3>SPRING</h3>
+									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
+								</section>
+								<section class="col-4 col-6-medium col-12-xsmall">
+									<span class="icon alt major fa-paper-plane"></span>
+									<h3>Non semper interdum</h3>
+									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
+								</section>
+								<section class="col-4 col-6-medium col-12-xsmall">
+									<span class="icon alt major fa-file"></span>
+									<h3>Odio laoreet accumsan</h3>
+									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
+								</section>
+								<section class="col-4 col-6-medium col-12-xsmall">
+									<span class="icon alt major fa-lock"></span>
+									<h3>Massa arcu accumsan</h3>
+									<p>Feugiat accumsan lorem eu ac lorem amet accumsan donec. Blandit orci porttitor.</p>
+								</section>
+							</div>
+						</div>
+						<footer class="major">
+							<ul class="actions special">
+								<li><a href="#" class="button">버튼 ^^*</a></li>
+							</ul>
+						</footer>
+					</div>
+				</section>
+					
 		
 		<%@ include file="/common/footer.jsp"%>		
 	</div>
-</body>
-
-<script type="template" id="template-project">
+	
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/template.js"></script>
+	<script src="assets/js/handlebars.min.js"></script>
+		
+		<script type="template" id="template-project">
   <section id="project-{{id}}" class="spotlight {{style}} {{direction}}">
 	<span class="image fit main"><img src="{{image}}" alt="{{name}}" /></span>
 	<div class="content">
@@ -89,11 +137,12 @@
 	       <li><a href="./descriptionProject?id={{id}}" class="button">자세히 보기</a></li>
 		</ul>
 	</div>
+		<a href="{{next}}" class="goto-next scrolly">Next</a>
  </section>
 </script>
 <script>
   $(document).ready(function(){
-	 	  
+	
 	  //< 프로젝트 정보를 갱신한다.
 		 $.ajax({
 			type : "GET",
@@ -105,13 +154,16 @@
 						alert(request.responseText);
 					}
 			}); 
-	  
+		
 }); 
-			
+	
 function setProjectInfomation(responseData){
 	responseData.projectList.forEach(function(v,i){
 			setProjectHTML(v,i);
 			}); 
+	
+	//< 인트로 페이지 이후 최신 프로젝트로 이동 할 수 있게 변경
+	$("#info").children(".goto-next.scrolly").attr("href","#project-" + responseData.projectList.length);
 	
 	//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
 	 callScript("assets/js/main.js");
@@ -132,7 +184,9 @@ function setProjectHTML(responseData,childNum){
 		data['style'] = "style" + makeRandom(1,4);
 		var direction = ['right','left'];
 		data['direction'] = direction[ makeRandom(0,2)];
-			
+		
+		data['next'] = data['id']-1 > 0 ? "#project-"+(data['id']-1) : "#skill";
+		
 		var resultHTML = templateParserAfter("#template-project", data,"#projectList-wrapper");
 		
 		$("#nav-projectList").append(function(){
@@ -141,7 +195,8 @@ function setProjectHTML(responseData,childNum){
 		});
 }
 </script>
-		
+	<%@ include file="/common/popup.jsp"%>		
+</body>
 </html>
 
 

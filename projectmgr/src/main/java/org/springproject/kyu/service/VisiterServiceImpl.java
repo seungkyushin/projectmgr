@@ -66,7 +66,7 @@ public class VisiterServiceImpl implements VisiterService {
 	public int deleteVisiter(VisiterDto data, String ip) {
 		VisiterDto visiter = this.getVisiter(data.getEmail());
 
-		if (visiter != null  && checkPassword(data.getPassword(), visiter.getPassword()) == true) {
+		if (visiter != null) {
 			try {
 				visiterDao.delete(data.getEmail());
 				logger.error("삭제 성공 | {} | {}", ip, data.getEmail());
@@ -76,7 +76,7 @@ public class VisiterServiceImpl implements VisiterService {
 				return FAILED;
 			}
 		}
-		
+		logger.error("삭제 실패 계정 NULL | {} | {}", ip, data.getEmail());
 		return FAILED;
 	}
 
@@ -88,7 +88,7 @@ public class VisiterServiceImpl implements VisiterService {
 		if (visiter != null && checkPassword(password, visiter.getPassword()) == true) {
 			// < 마지막 로그인 갱신
 			try {
-				visiterDao.updateLastLoginTime(visiter.getEmail(), dateFormat.format(new Date()));
+				visiterDao.updateLastLoginTime(visiter);
 			} catch (SQLException e) {
 				logger.info("로그인 실패 | {} | {} | {}", ip, visiter.getEmail(), e.toString());
 				return null;
@@ -139,24 +139,25 @@ public class VisiterServiceImpl implements VisiterService {
 			
 			try {
 				VisiterDto visiter = this.getVisiter(data.getEmail());
-				int updateFileId = visiter.getFileId();
-				int beforFileId = updateFileId;
+				int beforFileId = visiter.getFileId();
 					
 				//< 사용자가 선택한 이미지 파일 업로드 및 db 갱신
 				if( file.getSize() > 0 || file.getOriginalFilename().isEmpty() == false ) {
-					updateFileId = this.uploadImage(file, data.getEmail(), ip);
+					visiter.setFileId( this.uploadImage(file, data.getEmail(), ip) );
 				}
 					
 				//< 패스워드 값 있으면 해당값으로 변경
-				String password = "";
 				if( data.getPassword() != null && data.getPassword().isEmpty() == false) {
-					password = Encryption.SHA512(data.getPassword());
-				}else {
-					password = visiter.getPassword();
+					visiter.setPassword( Encryption.SHA512(data.getPassword()) );
+				}
+				
+				//< 조직란에 값이 있으면 해당값으로 변경
+				if( data.getOrganization() != null && data.getOrganization().isEmpty() == false) {
+					visiter.setOrganization( data.getOrganization() );
 				}
 				
 				//< 회원 정보 수정
-				visiterDao.updateInfo(visiter.getEmail(), password, data.getOrganization(), updateFileId);
+				visiterDao.updateInfo(visiter);
 				
 								
 				//< 회원 정보 수정 완료 후 프로파일 이미지 삭제 
@@ -197,7 +198,7 @@ public class VisiterServiceImpl implements VisiterService {
 	@Override
 	public int uploadImage(MultipartFile file, String email, String ip) {
 		
-		int randomName = new Date().hashCode();
+		int randomName = Math.abs( new Date().hashCode() );
 	    int index = file.getOriginalFilename().lastIndexOf(".");
       	String fileNameExtension =  file.getOriginalFilename().substring(index + 1);
 		String fileName = randomName + "." +fileNameExtension;

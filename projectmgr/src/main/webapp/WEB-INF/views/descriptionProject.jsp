@@ -11,19 +11,6 @@
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/popup.css"/>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-	
-	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	
-		<!-- Scripts -->
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/jquery.scrolly.min.js"></script>
-	<script src="assets/js/jquery.dropotron.min.js"></script>
-	<script src="assets/js/jquery.scrollex.min.js"></script>
-	<script src="assets/js/browser.min.js"></script>
-	<script src="assets/js/breakpoints.min.js"></script>
-	<script src="assets/js/util.js"></script>
-	<script src="assets/js/template.js"></script>
-	<script src="assets/js/handlebars.min.js"></script>
  </head>
 	<body class="is-preload">
 		<div id="page-wrapper">
@@ -59,8 +46,22 @@
 						
 						</div>
 					</div>
+					
+					<%@ include file="/common/header.jsp" %>
 				</div>
 
+
+<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/template.js"></script>
+	<script src="assets/js/handlebars.min.js"></script>
+	
 <script type="template" id="list_item">
 
 <li class="list_item" style="list-style-type: none" >
@@ -228,7 +229,7 @@ function changTypeClassName(type){
 }
 </script>
 
-<%@ include file="/common/footer.jsp" %>
+	<%@ include file="/common/popup.jsp" %>
 	</body>
 </html>
 

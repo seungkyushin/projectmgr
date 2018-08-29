@@ -1,20 +1,64 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 
 <html>
-	<head>
+<head>
 <title>KYU - LOGIN</title>
-	<meta charset="utf-8" />
-	<meta name="viewport"content="width=device-width, initial-scale=1, user-scalable=no" />		<link rel="stylesheet" href="assets/css/main.css" />
-	<link rel="stylesheet" href="assets/css/action.css" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<link rel="stylesheet" href="assets/css/popup.css"/>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-	
-	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	
-		<!-- Scripts -->
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<link rel="stylesheet" href="assets/css/action.css" />
+<link rel="stylesheet" href="assets/css/main.css" />
+<link rel="stylesheet" href="assets/css/popup.css" />
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+	integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+	crossorigin="anonymous">
+</head>
+
+<body>
+	<div id="page-wrapper">
+		<%@ include file="/common/header.jsp"%>
+
+		<!-- Main -->
+		<div id="main" class="wrapper style1">
+			<div class="container">
+				<header class="major">
+					<h2>패스워드 확인</h2>
+					<p id="errorMsg" style="color: #e44c65">${errorMessage}</p>
+					<p id="checkmsg"></p>
+				</header>
+				<!-- Form -->
+				<section>
+					<form id="formData" method="post" action="./profile">
+						<div class="row gtr-uniform gtr-50">
+
+							<div class="col-4 col-12-xsmall"></div>
+							<div class="col-4 col-12-xsmall">
+								<input type="password" name="password" id="password" value=""
+									placeholder="비밀번호" />
+							</div>
+							
+							<div class="col-4 col-12-xsmall"></div>
+
+							<div class="col-5 col-4-medium col-12-xsmall"></div>
+							<div class="col-2 col-4-medium col-12-xsmall">
+								<ul class="actions stacked">
+									<li><input id="sendBtn" type="button"
+										class="button primary fit" value="확인"></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</section>
+			</div>
+		</div>
+		<%@ include file="/common/footer.jsp"%>
+	</div>
+
+<!-- Scripts -->
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="assets/js/jquery.scrolly.min.js"></script>
 	<script src="assets/js/jquery.dropotron.min.js"></script>
@@ -24,105 +68,61 @@
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/template.js"></script>
 	<script src="assets/js/handlebars.min.js"></script>
-</head>
-	<body >
-		<div id="page-wrapper">
-			<%@ include file="/common/header.jsp"%>
+	
+	<script>
+		$(document).ready(function() {
+			startAnimation("#formData", "bounceIn");
 
-			<!-- Main -->
-				<div id="main" class="wrapper style1">
-					<div class="container">
-						<header class="major">
-							<h2>패스워드 확인</h2>
-                         	<p id="errorMsg" style="color:#e44c65">${errorMessage}</p>
-                         	<p id="checkmsg"></p>
-						</header>
-					<!-- Form -->
-							<section>
-				    				<form id="formData" method="post" action="./profile">
-									<div class="row gtr-uniform gtr-50"></div>
+			$("#sendBtn").on("click", function(event) {
 
+				event.preventDefault();
+				login();
 
-                                        
-                                        
-                                        <div class="col-4 col-12-xsmall"></div> 
-										<div class="col-4 col-12-xsmall">
-											<input type="password" name="password" id="password" value="" placeholder="비밀번호" />
-                                        </div>
-                                        <div class="col-4 col-12-xsmall"></div> 
-									
+			});
 
-                                    <div class="col-5 col-4-medium col-12-xsmall"></div>
-                                    <div class="col-2 col-4-medium col-12-xsmall"></div>
-										<ul class="actions stacked">
-											<li><input id="sendBtn" type="button" class="button primary fit" value="확인"></li>
-											</ul>
-            
-								</form>
-							</section>
-					</div>
-				</div>
-				<%@ include file="/common/footer.jsp" %>
-		</div>
+			$("#formData").keypress(function(e) {
+				if (e.which == 13) {
+					login();
+				}
+			});
 
-<script>
-
-$(document).ready(function(){
-	startAnimation("#formData","bounceIn");
-
-			$("#sendBtn").on("click",function(event){
-				 
-				 event.preventDefault();
-				 login();
-				 
-			 });
-			
-			$("#formData").keypress(function (e) {
-		        if (e.which == 13){
-		        	login();
-		        }
-		    });
-			
 			//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
-			 callScript("assets/js/main.js");
-});
-function login(){
-	
-	if( isCheckForm() == true )
-	 {
-		$("#formData").submit();
-	 }
-	else{
-			$("#errorMsg").text("");
-	}
-	
-} 
-function isCheckForm(){
-				
-				var password =  $("#password").val();
-				var email = $("#email").val();
-				var checkMsgHTML = "";
-				var result = true;
+			callScript("assets/js/main.js");
+		});
+		function login() {
 
-				$("#checkmsg").html("");
+			if (isCheckForm() == true) {
+				$("#formData").submit();
+			} else {
+				$("#errorMsg").text("");
+			}
 
-				
-				if( password.length <= 0 ){
-					checkMsgHTML += " [<strong style='color:#e44c65'>비밀번호</strong>] ";
-					startAnimation("#password","shake");
-					result = false;
-				}
-				
-				
-				if( result == false){
-					checkMsgHTML += "를 확인해 주세요!";
-					$("#checkmsg").html(checkMsgHTML);
-				}
-				
-				return result;
-}
-		
-</script>
+		}
+		function isCheckForm() {
+
+			var password = $("#password").val();
+			var email = $("#email").val();
+			var checkMsgHTML = "";
+			var result = true;
+
+			$("#checkmsg").html("");
+
+			if (password.length <= 0) {
+				checkMsgHTML += " [<strong style='color:#e44c65'>비밀번호</strong>] ";
+				startAnimation("#password", "shake");
+				result = false;
+			}
+
+			if (result == false) {
+				checkMsgHTML += "를 확인해 주세요!";
+				$("#checkmsg").html(checkMsgHTML);
+			}
+
+			return result;
+		}
+	</script>
+	
+		<%@ include file="/common/popup.jsp"%>
 </body>
 </html>
 
