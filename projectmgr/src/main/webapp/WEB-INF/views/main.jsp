@@ -149,6 +149,11 @@
 			url : "./api/project/0",
 			success : function(response){
 					setProjectInfomation(response);
+					
+					window.setTimeout(function() {
+						$("body").removeClass('is-preload');
+					}, 1000);
+					
 				},
 			error : function(request,status,error){
 						alert(request.responseText);
