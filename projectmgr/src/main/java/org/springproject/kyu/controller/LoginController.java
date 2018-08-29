@@ -52,11 +52,12 @@ public class LoginController {
 			RedirectAttributes redirectAttr,
 			HttpServletRequest req,
 			HttpServletResponse res,
-			ModelAndView modelAndView) {
+			ModelAndView modelAndView) throws Exception{
 		
 		String clientIp = (String)req.getAttribute("clientIp");
 		VisiterDto visiter = visiterService.checkLogin(email, password, clientIp);
 		String viewName = "";
+		
 		
 		if( visiter != null ) {
 			session.setAttribute("email", email);

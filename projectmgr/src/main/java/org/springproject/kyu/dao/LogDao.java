@@ -1,18 +1,9 @@
 package org.springproject.kyu.dao;
 
-import static org.springproject.kyu.sqlstring.Log.*;
-
 import java.util.List;
 
-import javax.sql.DataSource;
-
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springproject.kyu.dto.LogDto;
 
@@ -20,6 +11,19 @@ import org.springproject.kyu.dto.LogDto;
 public class LogDao {
 	
 	@Autowired
+	private SqlSession sqlSession;
+	private String namesapce = "org.springproject.kyu.mapper.logMapper";
+	
+	
+	 public List<LogDto> selectAll() throws Exception{
+		  return sqlSession.selectList(namesapce + ".getAll");
+	 }
+	 
+	 public int insert(LogDto data) {
+		 return sqlSession.insert(namesapce + ".add", data );
+	 }
+	 
+	/*@Autowired
 	private NamedParameterJdbcTemplate jdbc;
 	
 	private SimpleJdbcInsert insertAction;
@@ -40,7 +44,7 @@ public class LogDao {
 		 
 		 SqlParameterSource params = new BeanPropertySqlParameterSource(data);
 			return insertAction.executeAndReturnKey(params).intValue();
-	 }
+	 }*/
 	 
  
 

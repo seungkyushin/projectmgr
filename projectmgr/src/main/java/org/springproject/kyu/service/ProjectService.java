@@ -8,8 +8,8 @@ import org.springproject.kyu.dto.ProjectDto;
 
 public interface ProjectService {
 	
-	public List<Map<String,Object>> getProjectListAll();
-	public Map<String,Object> getProjectList(int id) ;
-	public ProjectDto getProjectDto(int id) ;
+	public List<Map<String,Object>> getProjectListAll() throws Exception;
+	public Map<String,Object> getProjectList(int id) throws Exception;
+	public ProjectDto getProjectDto(int id) throws Exception;
 
 }

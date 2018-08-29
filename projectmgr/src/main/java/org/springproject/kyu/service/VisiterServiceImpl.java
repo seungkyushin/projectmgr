@@ -37,9 +37,7 @@ public class VisiterServiceImpl implements VisiterService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
-	public int addVisiter(VisiterDto data, String ip) {// throws SQLException, DuplicateKeyException {
-
-	
+	public int addVisiter(VisiterDto data, String ip) throws Exception {
 		logger.info("가입시도 | {} | {}", ip, data.getEmail());
 
 		try {
@@ -49,50 +47,38 @@ public class VisiterServiceImpl implements VisiterService {
 			//< 기본값 설정
 			data.setCreateDate(dateFormat.format(new Date()));
 			data.setFileId(4);
-
 			
 			visiterDao.insert(data);
+			
 			return SUCCESS;
 		} catch (DuplicateKeyException e) {
-			logger.error("가입실패:동일 Email 존재 | {} | {} | {}", ip, data.getEmail(), e.toString());
+			logger.error("가입실패:동일 Email 존재 | {} | {} | {}", ip, data.getEmail(), e.getMessage());
 			return ERROR_DUPLICATE_FOR_EMAIL;
-		} catch (SQLException e) {
-			logger.error("가입실패 | {} | {} | {}", ip, data.getEmail(), e.toString());
-			return FAILED;
-		}
+		} 
 	}
 
 	@Override
-	public int deleteVisiter(VisiterDto data, String ip) {
+	public int deleteVisiter(VisiterDto data, String ip) throws Exception{
 		VisiterDto visiter = this.getVisiter(data.getEmail());
 
 		if (visiter != null) {
-			try {
-				visiterDao.delete(data.getEmail());
-				logger.error("삭제 성공 | {} | {}", ip, data.getEmail());
-				return SUCCESS;
-			} catch (SQLException e) {
-				logger.error("삭제 실패 | {} | {} | {}", ip, data.getEmail(),e.toString());
-				return FAILED;
-			}
+			visiterDao.delete(data.getEmail());
+			logger.error("삭제 성공 | {} | {}", ip, data.getEmail());
+			return SUCCESS;
 		}
 		logger.error("삭제 실패 계정 NULL | {} | {}", ip, data.getEmail());
 		return FAILED;
 	}
 
 	@Override
-	public VisiterDto checkLogin(String email, String password, String ip) {
-		VisiterDto visiter = this.getVisiter(email);
+	public VisiterDto checkLogin(String email, String password, String ip) throws Exception{
 		logger.info("로그인 시도 | {} | {}", ip, email);
-
+		
+		VisiterDto visiter = this.getVisiter(email);
+		
 		if (visiter != null && checkPassword(password, visiter.getPassword()) == true) {
 			// < 마지막 로그인 갱신
-			try {
-				visiterDao.updateLastLoginTime(visiter);
-			} catch (SQLException e) {
-				logger.info("로그인 실패 | {} | {} | {}", ip, visiter.getEmail(), e.toString());
-				return null;
-			}
+			visiterDao.updateLastLoginTime(visiter);
 			logger.info("로그인 성공 | {} | {}", ip, visiter.getEmail());
 			return visiter;
 		}
@@ -102,36 +88,36 @@ public class VisiterServiceImpl implements VisiterService {
 	}
 
 	@Override
-	public VisiterDto getVisiter(String email) {
+	public VisiterDto getVisiter(String email) throws Exception{
 
 		if (email != null && email.isEmpty() == false) {
 			if (visiterDao != null)
 				try {
 					return visiterDao.selectByEmail(email);
-					//return visiterDao.selectByEmail(email);
 				} catch (EmptyResultDataAccessException e) {
-					logger.error("방문자 email 일치하는 데이터 없음 | {}", e.toString());
-
-				} catch (Exception e) {
-					logger.error("{}", e.toString());
-				}
+					logger.error("방문자 email 일치하는 데이터 없음 | {}", e.getMessage());
+				} 
 		}
 
 		return null;
 	}
 
 	@Override
-	public VisiterDto getVisiter(int id) {
-		if (id != 0) {
+	public VisiterDto getVisiter(int id) throws Exception
+	{
+		if (id != 0) 
+		{
 			if (visiterDao != null)
+			{
 				return visiterDao.selectById(id);
+			}
 		}
 
 		return null;
 	}
 
 	@Override
-	public int updateVisiter(VisiterDto data, MultipartFile file,  String ip) {
+	public int updateVisiter(VisiterDto data, MultipartFile file,  String ip) throws Exception {
 
 		if ( data == null || ip == null || ip.isEmpty() ) {
 			return FAILED;
@@ -171,22 +157,14 @@ public class VisiterServiceImpl implements VisiterService {
 						System.out.println("delete file id " + result);
 					}
 				}
-				
-				
+		
 				logger.info("회원정보 수정 성공 | {} | {}", ip, data.getEmail());
 				
 			} catch (EmptyResultDataAccessException e) {
-				logger.error("회원정보 수정 실패 : 알수없는 Email | {} | {} | {}", ip, data.getEmail(), e.toString());
+				logger.error("회원정보 수정 실패 : 알수없는 Email | {} | {} | {}", ip, data.getEmail(), e.getMessage());
 				return FAILED;
-			}  catch (SQLException e) {
-				logger.error("회원정보 수정 실패 | {} | {} | {}", ip, data.getEmail(), e.toString());
-				return FAILED;
-			}
-			catch (Exception e) {
-				logger.error("회원정보 수정 실패 | {} | {} | {}", ip, data.getEmail(), e.toString());
-				return FAILED;
-			}
-			
+			} 
+		
 		return SUCCESS;
 	}
 
@@ -196,7 +174,7 @@ public class VisiterServiceImpl implements VisiterService {
 	}
 
 	@Override
-	public int uploadImage(MultipartFile file, String email, String ip) {
+	public int uploadImage(MultipartFile file, String email, String ip) throws Exception{
 		
 		int randomName = Math.abs( new Date().hashCode() );
 	    int index = file.getOriginalFilename().lastIndexOf(".");
@@ -219,7 +197,7 @@ public class VisiterServiceImpl implements VisiterService {
         	    	fos.write(buffer,0,readCount);
             }
         }catch(Exception ex){
-        	logger.error("파일 업로드 실패 | {} | {} | {}", ip, email, ex.toString());
+        	logger.error("파일 업로드 실패 | {} | {} | {}", ip, email, ex.getMessage());
             return FAILED;
         }
         

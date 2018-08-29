@@ -41,7 +41,7 @@ public class ProfileController {
 	public String showpage(@RequestParam(name="password") String password,
 			HttpSession hSession,
 			RedirectAttributes redirectAttr,
-			ModelMap modelMap) {
+			ModelMap modelMap) throws Exception{
 		String email = (String)hSession.getAttribute("email");
 		
 		if( password == null || email == null) {
@@ -75,7 +75,7 @@ public class ProfileController {
 				HttpServletRequest req,
 			HttpServletResponse res,
 			RedirectAttributes redirectAttr,
-			ModelMap modelMap) {
+			ModelMap modelMap) throws Exception{
 
 		String ip = (String)req.getAttribute("clientIp");
 		String message = "";
@@ -98,7 +98,7 @@ public class ProfileController {
 	@PostMapping(path="/delete")
 	public String deleteVisiter(@ModelAttribute VisiterDto visiter,
 			HttpServletRequest req,
-			ModelMap modelMap) {
+			ModelMap modelMap) throws Exception{
 		String viewName = "";
 		String ip = (String)req.getAttribute("clientIp");
 		

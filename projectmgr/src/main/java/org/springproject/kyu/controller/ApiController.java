@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.attribute.standard.RequestingUserName;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -41,7 +43,7 @@ public class ApiController {
 	 * id값이 0일 경우 모든 project 정보를 받아 온다.
 	 */
 	@GetMapping(path="/project/{id}")
-	public Map<String, Object> getProjectList(@PathVariable("id") int id){
+	public Map<String, Object> getProjectList(@PathVariable("id") int id) throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		if( id == 0 ) 
@@ -54,7 +56,7 @@ public class ApiController {
 
 	@GetMapping(path="/comment/{projectId}/{start}")
 	public Map<String, Object> getCommentList(@PathVariable("projectId") int projectId,
-											  @PathVariable("start") int start){
+											  @PathVariable("start") int start) throws Exception{
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		List<Object> paramList = new ArrayList<>();
@@ -116,10 +118,18 @@ public class ApiController {
 	//< REST API의 Exception을 관리한다.
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(EmptyResultDataAccessException.class)
-	public String handleEmptyResultDataAccessException() {
-		System.out.println("EmptyResultDataAccessException");
+	public String handleEmptyResultDataAccessException(EmptyResultDataAccessException e) {
 		return "Not Found data";
 	}
+	
+/*	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(Exception.class)
+	public Map<String, Object> handleException(Exception e) {
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("projectList", null);
+		return resultMap;
+	}
+	*/
 	
 	
 }

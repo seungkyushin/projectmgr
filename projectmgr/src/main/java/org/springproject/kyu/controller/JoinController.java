@@ -26,7 +26,7 @@ public class JoinController {
 	@PostMapping(path="/addvisiter")
 	public String addVisiter( @ModelAttribute VisiterDto visiter,
 			HttpServletRequest req,
-			ModelMap modelMap){
+			ModelMap modelMap) throws Exception{
 
 		String clientIp = (String)req.getAttribute("clientIp");
 

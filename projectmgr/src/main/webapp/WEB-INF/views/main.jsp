@@ -152,6 +152,8 @@
 				},
 			error : function(request,status,error){
 						alert(request.responseText);
+						//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
+						 callScript("assets/js/main.js");
 					}
 			}); 
 		

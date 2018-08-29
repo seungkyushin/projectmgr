@@ -38,7 +38,7 @@ public class UserCommentServiceImpl implements UserCommentService{
 	}
 
 	@Override
-	public int addUserComment(UserCommentDto data, String email, String ip) {
+	public int addUserComment(UserCommentDto data, String email, String ip) throws Exception{
 		
 		int result = 0;
 		VisiterDto visiter = visiterService.getVisiter(email);

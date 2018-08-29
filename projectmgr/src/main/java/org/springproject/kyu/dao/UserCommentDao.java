@@ -1,11 +1,8 @@
 package org.springproject.kyu.dao;
 
 
-import static org.springproject.kyu.sqlstring.UserComment.SELECT_ALL_BY_PROJECT_ID;
-import static org.springproject.kyu.sqlstring.UserComment.SELECT_ALL_BY_VISITER_ID;
-import static org.springproject.kyu.sqlstring.UserComment.SELECT_BY_PROJECT_ID;
-import static org.springproject.kyu.sqlstring.UserComment.SELECT_COUNT_BY_PROJECT_ID;
-import static org.springproject.kyu.sqlstring.UserComment.TABLE_NAME;
+import static org.springproject.kyu.mapper.querystring.UserComment.*;
+
 
 import java.sql.SQLException;
 import java.util.HashMap;

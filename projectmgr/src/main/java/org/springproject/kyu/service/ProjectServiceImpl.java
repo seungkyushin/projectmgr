@@ -1,10 +1,13 @@
 package org.springproject.kyu.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -22,8 +25,10 @@ public class ProjectServiceImpl implements ProjectService{
 	@Autowired
 	FileInfoDao fileInfoDao;
 	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Override
-	public List<Map<String, Object>> getProjectListAll() {
+	public List<Map<String, Object>> getProjectListAll() throws Exception{
 		
 		List<ProjectDto> projectDto = projectDao.selectAll();
 		List<Map<String, Object>> resultList = new ArrayList<>();
@@ -37,8 +42,17 @@ public class ProjectServiceImpl implements ProjectService{
 			pramMap.put("name", data.getName());
 			pramMap.put("url", data.getUrl());
 			
-			FileInfoDto fileInfoDto = fileInfoDao.selectById(data.getFileId());
-			pramMap.put("image", fileInfoDto.getUrlPath());
+			FileInfoDto fileInfoDto = null;
+			
+			try {
+				fileInfoDto = fileInfoDao.selectById(data.getFileId());
+				pramMap.put("image", fileInfoDto.getUrlPath());
+			}  catch (EmptyResultDataAccessException e) {
+				logger.error("{}",e.getMessage());
+				pramMap.put("image", "images/notfoundImage.png");
+			}
+		
+			
 			
 			resultList.add(pramMap);
 		}
@@ -47,7 +61,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public Map<String, Object> getProjectList(int id) {
+	public Map<String, Object> getProjectList(int id) throws Exception{
 		ProjectDto projectDto = projectDao.selectById(id);
 		Map<String, Object> result = new HashMap<>();
 			
@@ -57,14 +71,21 @@ public class ProjectServiceImpl implements ProjectService{
 			result.put("name", projectDto.getName());
 			result.put("url", projectDto.getUrl());
 			
-			FileInfoDto fileInfoDto = fileInfoDao.selectById(projectDto.getFileId());
-			result.put("image", fileInfoDto.getUrlPath());
+			FileInfoDto fileInfoDto = null;
+			try {
+					fileInfoDto = fileInfoDao.selectById(projectDto.getFileId());
+					result.put("image", fileInfoDto.getUrlPath());
+			} catch (EmptyResultDataAccessException e) {
+				logger.error("{}",e.getMessage());
+				result.put("image", "images/notfoundImage.png");
+			}
+			
 		
 		return result;
 	}
 
 	@Override
-	public ProjectDto getProjectDto(int id) throws EmptyResultDataAccessException{
+	public ProjectDto getProjectDto(int id) throws Exception{
 		return projectDao.selectById(id);
 	}
 	

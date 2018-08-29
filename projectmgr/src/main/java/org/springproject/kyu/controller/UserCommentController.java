@@ -27,7 +27,7 @@ public class UserCommentController {
 	
 	@GetMapping("/comment")
 	public String showPage(@RequestParam(name="projectId") int projectId,
-			HttpServletRequest req) {
+			HttpServletRequest req) throws Exception{
 		
 		ProjectDto projectDto = projectService.getProjectDto(projectId);
 		
@@ -39,7 +39,7 @@ public class UserCommentController {
 	@PostMapping("/addcomment")
 	public String addComment(@ModelAttribute UserCommentDto data,
 			HttpServletRequest req,
-			HttpSession sec) {
+			HttpSession sec) throws Exception{
 		String clientIp = (String)req.getAttribute("clientIp");
 		String email = (String)sec.getAttribute("email");
 		

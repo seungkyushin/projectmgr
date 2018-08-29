@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,7 +22,7 @@ import org.springproject.kyu.interceptor.PageUtilInterceptor;
  */
 @Configuration
 @EnableWebMvc //<DispatcherServlet의 RequestMappingHandlerMapping, RequestMappingHandlerAdapter, ExceptionHandlerExceptionResolver, MessageConverter 등 Web에 필요한 빈들을 대부분 자동으로 설정해준다.
-@ComponentScan(basePackages = { "org.springproject.kyu.controller" })
+@ComponentScan(basePackages = { "org.springproject.kyu.controller", "org.springproject.kyu.exception" })
 public class WebMvcContextConfig extends WebMvcConfigurerAdapter{
 
 	//< Resource의 요청이 들어오면 ResourceHandler에게 설정된 경로부터 찾으라고 알려준다.

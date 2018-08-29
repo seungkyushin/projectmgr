@@ -1,7 +1,5 @@
 package org.springproject.kyu.dao;
 
-//import static org.springproject.kyu.sqlstring.Visiter.*;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,19 +9,15 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springproject.kyu.dto.VisiterDto;
-import org.springproject.kyu.mapper.VisiterMapper;
 
 @Repository
 public class VisiterDao {
-	 
-	 @Autowired
-	 VisiterMapper visiterMapper;
-	
-	 @Autowired
-	 SqlSession sqlSession;
+
+	@Autowired
+	 private SqlSession sqlSession;
 	 private String namesapce = "org.springproject.kyu.mapper.VisiterMapper";
 	 
-	 public List<VisiterDto> selectAll() throws SQLException, EmptyResultDataAccessException{
+	 public List<VisiterDto> selectAll() throws EmptyResultDataAccessException, Exception{
 		  return sqlSession.selectList(namesapce + ".getAllList");
 	 }
 	 	    
@@ -31,24 +25,24 @@ public class VisiterDao {
 		 return  sqlSession.selectOne(namesapce + ".getByEmail",email);
 	 } 
 	 
-	 public VisiterDto selectById(int id) throws EmptyResultDataAccessException{
+	 public VisiterDto selectById(int id) throws EmptyResultDataAccessException, Exception {
 		 return sqlSession.selectOne(namesapce + ".getById",id);
 	 }
 	 
 	 //< 리턴값은 등록된 ID 값
-	 public int insert(VisiterDto data) throws SQLException, DuplicateKeyException{
+	 public int insert(VisiterDto data) throws DuplicateKeyException, Exception{
 		 return sqlSession.insert(namesapce + ".add", data);
 	 }
 	 
-	 public int delete(String email) throws SQLException{
+	 public int delete(String email) throws Exception{
 		 return sqlSession.delete(namesapce + ".removeByEmail", email);
 	 }
 	 
-	 public int updateLastLoginTime(VisiterDto data) throws SQLException{
+	 public int updateLastLoginTime(VisiterDto data) throws Exception{
 		 return sqlSession.update(namesapce + ".updateLastLoginByEmail", data);
 	 }
 	 
-	 public int updateInfo(VisiterDto data) throws SQLException {
+	 public int updateInfo(VisiterDto data) throws Exception{
 		 return sqlSession.update(namesapce + ".updateInfoByEmail", data);
 
 	 }
