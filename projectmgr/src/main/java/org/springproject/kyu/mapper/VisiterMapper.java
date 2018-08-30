@@ -23,7 +23,7 @@ public interface VisiterMapper {
 
 	// < 해당 email의 data를 확인
 	@Select(SELECT_BY_ID)
-	public VisiterDto getById(@Param("id") int id, @Param("test") int test);
+	public VisiterDto getById(@Param("id") int id);
 
 	// < 해당 email의 data를 삭제
 	@Delete(DELETE_BY_EMAIL)

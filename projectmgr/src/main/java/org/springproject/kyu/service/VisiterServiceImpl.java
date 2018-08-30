@@ -112,7 +112,6 @@ public class VisiterServiceImpl implements VisiterService {
 				return visiterDao.selectById(id);
 			}
 		}
-
 		return null;
 	}
 

@@ -14,6 +14,7 @@ public class CriteriaDto {
 		this.end = end;
 	}
 
+	
 	public int getId() {
 		return id;
 	}

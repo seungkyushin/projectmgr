@@ -23,8 +23,6 @@ public class UserCommentController {
 	
 	@Autowired
 	ProjectService projectService;
-	
-	
 	@GetMapping("/comment")
 	public String showPage(@RequestParam(name="projectId") int projectId,
 			HttpServletRequest req) throws Exception{

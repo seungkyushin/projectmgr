@@ -56,7 +56,6 @@ public class ApiController {
 	@GetMapping(path="/comment/{projectId}/{start}")
 	public Map<String, Object> getCommentList(@PathVariable("projectId") int projectId,
 											  @PathVariable("start") int start) throws Exception{
-		
 		Map<String, Object> resultMap = new HashMap<>();
 		List<Object> paramList = new ArrayList<>();
 		CriteriaDto criteria = new CriteriaDto(projectId,start,UserCommentDao.LIMIT,UserCommentDao.LIMIT);

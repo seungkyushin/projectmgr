@@ -26,7 +26,6 @@ public class FileInfoDao {
 
 	public int insert(FileInfoDto data) throws Exception{
 		return sqlSession.selectOne(namesapce + ".add", data);
-
 	}
 
 	public int update(FileInfoDto data) throws Exception{

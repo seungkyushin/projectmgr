@@ -34,7 +34,6 @@ public class WebMvcContextConfig extends WebMvcConfigurerAdapter{
 	}
 
 
-	
 	//<
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

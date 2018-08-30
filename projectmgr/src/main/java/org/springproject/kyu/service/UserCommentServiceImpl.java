@@ -20,13 +20,10 @@ public class UserCommentServiceImpl implements UserCommentService{
 
 	@Autowired
 	UserCommentDao userCommentDao;
-	
 	@Autowired
 	VisiterService visiterService;
-	
 	@Autowired 
 	DateFormat  dateFormat;
-	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override

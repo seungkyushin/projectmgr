@@ -65,8 +65,6 @@ public class DBConfig implements TransactionManagementConfigurer{
 		return transactionManager();
 	}
 	
-		
-
 	/*
 	 * Spring에서 지원하는 JdbcTemplate은 3가지가 있다. JdbcTemplate, NamedParameterJdbcTemplate, SimpleJdbcTemplate
 	 * 생성시 DataSource가 필요하며 하는 역할은 쿼리를 이용해 DB의 데이터를 받아온다.

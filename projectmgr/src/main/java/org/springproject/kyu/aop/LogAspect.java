@@ -27,7 +27,6 @@ public class LogAspect {
 
 		return pjp.proceed();
 	}
-	
 	/*@After("execution(* add*(..))")
 	public void after(JoinPoint jp){
 		System.out.println( jp.getSignature().getName() + "After");

@@ -24,5 +24,4 @@ public class GlobalExceptionAdvice {
 		logger.error("{}",baos.toString());
 		return "error/server";
 	}
-	
 }

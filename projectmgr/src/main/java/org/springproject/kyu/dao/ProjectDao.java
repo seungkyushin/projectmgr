@@ -19,10 +19,7 @@ public class ProjectDao {
 	public List<ProjectDto> selectAll() throws Exception{
 		  return sqlSession.selectList(namesapce + ".getAllList");
 	 }
-
-	 	    
-	 
-	 public ProjectDto selectById(int id) throws Exception, EmptyResultDataAccessException{
+	public ProjectDto selectById(int id) throws Exception, EmptyResultDataAccessException{
 		  return sqlSession.selectOne(namesapce + ".getById", id);
 	 }
 	 

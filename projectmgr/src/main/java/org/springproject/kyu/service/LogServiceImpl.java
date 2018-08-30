@@ -12,8 +12,8 @@ import org.springproject.kyu.dto.LogDto;
 @Service
 public class LogServiceImpl implements LogService{
 
-	private  DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
+	@Autowired
+	private  DateFormat dateFormat;
 	@Autowired
 	LogDao logDao;
 

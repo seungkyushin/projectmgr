@@ -22,13 +22,11 @@ public class VisiterDao {
 	 }
 	 	    
 	 public VisiterDto selectByEmail(String email) throws EmptyResultDataAccessException, Exception{
-		
 		 return  sqlSession.selectOne(namesapce + ".getByEmail",email);
 	 } 
 	 
 	 public VisiterDto selectById(int id) throws EmptyResultDataAccessException, Exception {
 		 return sqlSession.selectOne(namesapce + ".getById",id);
-		
 	 }
 	 
 	 //< 리턴값은 등록된 ID 값
@@ -46,7 +44,6 @@ public class VisiterDao {
 	 
 	 public int updateInfo(VisiterDto data) throws Exception{
 		 return sqlSession.update(namesapce + ".updateInfoByEmail", data);
-
 	 }
 	 
 	/*  

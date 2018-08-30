@@ -11,7 +11,6 @@ import org.springproject.kyu.dto.CriteriaDto;
 import org.springproject.kyu.dto.UserCommentDto;
 
 public interface UserCommentMapper {
-
 		@Select(SELECT_ALL)
 		public List<UserCommentDto> getAllList() ;
 
@@ -29,5 +28,4 @@ public interface UserCommentMapper {
 		
 		@Insert(INSERT)
 		public int add(UserCommentDto data);
-	
 }

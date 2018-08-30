@@ -46,6 +46,7 @@ public class UserCommentDao {
 		return sqlSession.insert(namesapce + ".add" , data);
 	}
 	
+	
 /*	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
 	

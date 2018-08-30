@@ -14,7 +14,6 @@ public class LogDao {
 	private SqlSession sqlSession;
 	private String namesapce = "org.springproject.kyu.mapper.logMapper";
 	
-	
 	 public List<LogDto> selectAll() throws Exception{
 		  return sqlSession.selectList(namesapce + ".getAll");
 	 }

@@ -19,10 +19,8 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
 	ProjectDao projectDao;
-	
 	@Autowired
 	FileInfoDao fileInfoDao;
-	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override

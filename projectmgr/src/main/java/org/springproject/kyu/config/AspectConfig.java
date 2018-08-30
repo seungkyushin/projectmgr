@@ -9,6 +9,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan(basePackages="org.springproject.kyu.aop")
 
 public class AspectConfig {
-
-	
 }

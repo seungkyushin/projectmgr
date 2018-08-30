@@ -118,5 +118,4 @@ public class ProfileController {
 		
 		return viewName; 
 	}
-	
 }

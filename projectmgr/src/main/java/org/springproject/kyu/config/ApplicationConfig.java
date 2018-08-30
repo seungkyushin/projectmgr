@@ -14,7 +14,4 @@ import org.springframework.context.annotation.Import;
 @Import({DBConfig.class,AspectConfig.class})
 
 public class ApplicationConfig {
-	
-
-
 }

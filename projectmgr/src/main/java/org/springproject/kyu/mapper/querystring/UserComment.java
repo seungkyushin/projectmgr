@@ -38,6 +38,4 @@ public class UserComment {
 				+ "(type,content,score,show_check,project_id,visiter_id,create_date)"
 				+ " VALUES(#{type},#{content},#{score},#{showCheck},#{projectId},#{visiterId},#{createDate})";
 		/*******************************************************************************************/
-		
-		
 }

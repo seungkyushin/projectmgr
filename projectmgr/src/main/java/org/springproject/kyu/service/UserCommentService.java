@@ -7,7 +7,6 @@ import org.springproject.kyu.dto.CriteriaDto;
 import org.springproject.kyu.dto.UserCommentDto;
 
 public interface UserCommentService {
-
 	public List<UserCommentDto> getUserCommentByProjectId(CriteriaDto criteria) throws EmptyResultDataAccessException, Exception;
 	public List<UserCommentDto> getAllUserCommentByProjectId(int id) throws EmptyResultDataAccessException, Exception;
 	public List<UserCommentDto> getUserCommentByVisiterId(CriteriaDto criteria) throws EmptyResultDataAccessException, Exception;
