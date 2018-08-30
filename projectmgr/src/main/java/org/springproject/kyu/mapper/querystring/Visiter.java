@@ -2,7 +2,6 @@ package org.springproject.kyu.mapper.querystring;
 
 public class Visiter {
 	
-	// id,name,email,organization,last_login
 	public static final String TABLE_NAME = "visiter";
 	
 	/************************************ SELECT ***********************************************/

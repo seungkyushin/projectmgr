@@ -1,35 +1,57 @@
 package org.springproject.kyu.dao;
 
-
-import static org.springproject.kyu.mapper.querystring.UserComment.*;
-
-
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.sql.DataSource;
-
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
+import org.springproject.kyu.dto.CriteriaDto;
 import org.springproject.kyu.dto.UserCommentDto;
 
 @Repository
 public class UserCommentDao {
 
 	@Autowired
+	private SqlSession sqlSession;
+	private String namesapce = "org.springproject.kyu.mapper.UserCommentMapper";
+	public static final int LIMIT = 5;
+	
+	public List<UserCommentDto> selectAll() 
+			throws EmptyResultDataAccessException, Exception{
+		return sqlSession.selectList(namesapce + ".getAllList");
+	}
+		
+	public List<UserCommentDto> selectAllByProjectId(@Param("id") int id) 
+			throws EmptyResultDataAccessException, Exception{
+		return sqlSession.selectList(namesapce + ".getAllListByProjectId", id);
+	}
+	
+	public List<UserCommentDto> selectByProjectId(CriteriaDto criteria) 
+			throws EmptyResultDataAccessException, Exception{
+		return sqlSession.selectList(namesapce + ".getListByProjectId", criteria);
+	}
+	
+	public List<UserCommentDto> selectByVisiterId(CriteriaDto criteria) 
+			throws EmptyResultDataAccessException, Exception{
+		return sqlSession.selectList(namesapce + ".getListByVisiterId", criteria);
+	}
+	
+	public int selectCountByPorjectId(@Param("id") int id) throws Exception{
+		return sqlSession.selectOne(namesapce + ".getCountByProjectId", id);
+	}
+	
+	public int insert(UserCommentDto data) throws Exception {
+		return sqlSession.insert(namesapce + ".add" , data);
+	}
+	
+/*	@Autowired
 	private NamedParameterJdbcTemplate jdbc;
 	
 	
 	private SimpleJdbcInsert insertAction;
-	private static final int LILIT = 4;
+	private static final int LIMIT = 4;
 	private RowMapper<UserCommentDto> rowMapper = new BeanPropertyRowMapper<>(UserCommentDto.class);
 	
 	public UserCommentDao(DataSource dataSource) {
@@ -70,6 +92,6 @@ public class UserCommentDao {
 	public int insert(UserCommentDto data) throws SQLException {
 		SqlParameterSource sqlParam = new BeanPropertySqlParameterSource(data);
 		return insertAction.executeAndReturnKey(sqlParam).intValue();
-	};
+	};*/
 }
 

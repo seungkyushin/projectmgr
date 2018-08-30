@@ -42,10 +42,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	
 			//< forward를 한 이유는 메시지를 띄우기 위해서
 			//< return 값을 false로 주게되면 PostHandle()은 동작하지 않는다.
-/*			RequestDispatcher rd= request.getRequestDispatcher("/login");
+			RequestDispatcher rd= request.getRequestDispatcher("/login");
 			request.setAttribute("resultMsg", "로그인이 필요한 서비스 입니다.");
 			rd.forward(request, response);
-			return false;*/
+			return false;
 			
 		}
 

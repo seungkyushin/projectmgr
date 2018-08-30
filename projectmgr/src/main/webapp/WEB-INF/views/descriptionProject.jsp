@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="assets/css/popup.css"/>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
  </head>
-	<body>
+	<body class="is-preload landing">
 		<div id="page-wrapper">
 			<%@ include file="/common/header.jsp" %>
 
@@ -122,10 +122,6 @@ $(document).ready(function(){
 	//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
 	 callScript("assets/js/main.js");
 	
-	 var checkMsg = "${ResultMessage}";
-	 if( checkMsg != ""){
-		 $(".popup_booking_wrapper").css("display","block");
-	 } 
 });
 
 function ajaxComment(projectId,start){
@@ -135,6 +131,11 @@ function ajaxComment(projectId,start){
 		success : function(response){
 			setCommentHTML(response);
 			setPageCount(response);
+			
+			window.setTimeout(function() {
+				$("body").removeClass('is-preload');
+			}, 1000);
+			
 		},
 		error : function(request,status,error){
 			alert(request.responseText);
@@ -185,17 +186,17 @@ function setCommentHTML(responseData){
 function setPageCount(responseData){
 	$("#page-count").empty();
 	
-	var pageCount = responseData.allCount / 4;
+	var pageCount = responseData.allCount / responseData.limit;
 	pageCount = Math.floor(pageCount);
 	
-	if(responseData.allCount % 4 > 0)
+	if(responseData.allCount % responseData.limit > 0)
 		pageCount++;
 	
 	for( var index = 1; index <= pageCount; index++){
 		$("#page-count").append(function(){
 
 				var html = '<li style="list-style-type:none;float:left;">';			
-				if((responseData.currentPage/4) == index-1){
+				if((responseData.currentPage/responseData.limit) == index-1){
 					return html += '<a style="color:rgb(228, 76, 101)" href="javascript:void(0)">' + index + '</a></li>';		
 				}
 				
@@ -206,7 +207,8 @@ function setPageCount(responseData){
 	
 
 	$("#page-count").on("click",function(event){
-		var startNum = (event.target.innerText-1) * 4;
+		var limit = $('#list_review').children().length;
+		var startNum = (event.target.innerText-1) * limit;
 		var projectId = ${requestScope.projectId};
 		ajaxComment(projectId,startNum);
 	});	

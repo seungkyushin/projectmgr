@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springproject.kyu.dao.UserCommentDao;
+import org.springproject.kyu.dto.CriteriaDto;
 import org.springproject.kyu.dto.UserCommentDto;
 import org.springproject.kyu.dto.VisiterDto;
 import org.springproject.kyu.service.ProjectService;
@@ -57,8 +59,9 @@ public class ApiController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		List<Object> paramList = new ArrayList<>();
+		CriteriaDto criteria = new CriteriaDto(projectId,start,UserCommentDao.LIMIT,UserCommentDao.LIMIT);
 		
-		List<UserCommentDto> userCommentDto = userCommentService.getUserCommentByProjectId(projectId,start);
+		List<UserCommentDto> userCommentDto = userCommentService.getUserCommentByProjectId(criteria);
 		
 		for( UserCommentDto data : userCommentDto) {
 			VisiterDto visiter = visiterService.getVisiter(data.getVisiterId());
@@ -74,7 +77,8 @@ public class ApiController {
 		
 		resultMap.put("comments", paramList);
 		resultMap.put("allCount",userCommentService.getUserCommentCount(projectId) );
-		resultMap.put("avgScore",userCommentService.getUserCommentAvgScore(projectId) );
+		resultMap.put("limit", UserCommentDao.LIMIT );
+		resultMap.put("avgScore",userCommentService.getUserCommentAvgScore(userCommentDto) );
 		resultMap.put("currentPage",start );
 		
 		return resultMap;

@@ -10,6 +10,7 @@ public class VisiterDto {
 	private int fileId;
 	private String createDate;
 	private String lastLoginDate;
+	
 	public int getId() {
 		return id;
 	}

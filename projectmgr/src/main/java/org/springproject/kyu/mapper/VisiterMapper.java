@@ -2,7 +2,6 @@ package org.springproject.kyu.mapper;
 
 import static org.springproject.kyu.mapper.querystring.Visiter.*;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -10,15 +9,13 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springproject.kyu.dto.VisiterDto;
 
 public interface VisiterMapper {
 
 	// < 모든 Visiter Data를 확인
 	@Select(SELECT_ALL)
-	public List<VisiterDto> getAllList() throws EmptyResultDataAccessException;
+	public List<VisiterDto> getAllList();
 
 	// < 해당 email의 data를 확인
 	@Select(SELECT_BY_EMAIL)
@@ -26,7 +23,7 @@ public interface VisiterMapper {
 
 	// < 해당 email의 data를 확인
 	@Select(SELECT_BY_ID)
-	public VisiterDto getById(@Param("id") int id);
+	public VisiterDto getById(@Param("id") int id, @Param("test") int test);
 
 	// < 해당 email의 data를 삭제
 	@Delete(DELETE_BY_EMAIL)

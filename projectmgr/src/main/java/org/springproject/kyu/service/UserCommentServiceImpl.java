@@ -8,8 +8,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springproject.kyu.dao.UserCommentDao;
+import org.springproject.kyu.dto.CriteriaDto;
 import org.springproject.kyu.dto.UserCommentDto;
 import org.springproject.kyu.dto.VisiterDto;
 
@@ -28,13 +30,15 @@ public class UserCommentServiceImpl implements UserCommentService{
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
-	public List<UserCommentDto> getUserCommentByProjectId(int id, int start) {
-		return userCommentDao.selectByProjectId(id,start);
+	public List<UserCommentDto> getUserCommentByProjectId(CriteriaDto criteria) 
+			throws EmptyResultDataAccessException, Exception {
+		return userCommentDao.selectByProjectId(criteria);
 	}
 
 	@Override
-	public List<UserCommentDto> getUserCommentByVisiterId(int id, int start) {
-		return userCommentDao.selectByVisiterId(id,start);
+	public List<UserCommentDto> getUserCommentByVisiterId(CriteriaDto criteria) 
+			throws EmptyResultDataAccessException, Exception {
+		return userCommentDao.selectByVisiterId(criteria);
 	}
 
 	@Override
@@ -61,27 +65,28 @@ public class UserCommentServiceImpl implements UserCommentService{
 	}
 
 	@Override
-	public int getUserCommentCount(int projectId) {
+	public int getUserCommentCount(int projectId) throws Exception {
 		return userCommentDao.selectCountByPorjectId(projectId);
 	}
 
 	@Override
-	public List<UserCommentDto> getAllUserCommentByProjectId(int id) {
+	public List<UserCommentDto> getAllUserCommentByProjectId(int id)
+			throws EmptyResultDataAccessException, Exception {
 		return userCommentDao.selectAllByProjectId(id);
 	}
 
 	@Override
-	public float getUserCommentAvgScore(int projectId) {
-		List<UserCommentDto> UserCommentList =  getAllUserCommentByProjectId(projectId);
-		
+	public float getUserCommentAvgScore(List<UserCommentDto> userCommentList) 
+			throws Exception {
+	
 		float sumScore = 0;
 		
-		for( UserCommentDto data : UserCommentList)
+		for( UserCommentDto data : userCommentList)
 		{
 			sumScore += data.getScore();
 		}
 		
-		sumScore /=  UserCommentList.size();
+		sumScore /=  userCommentList.size();
 		
 		return sumScore;
 	}
