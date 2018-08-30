@@ -7,8 +7,7 @@ public class UserComment {
 											+ "project_id AS projectId, visiter_id AS visiterId,"
 											+ "create_date AS createDate ";
 
-
-		
+	
 		/************************************ SELECT ***********************************************/
 		public static final String SELECT_ALL = "SELECT" + COLUMNS + "FROM" +  TABLE_NAME;
 		public static final String SELECT_LIMIT_BY_PROJECT_ID = SELECT_ALL + "WHERE project_id=#{id} AND show_check='off'"
