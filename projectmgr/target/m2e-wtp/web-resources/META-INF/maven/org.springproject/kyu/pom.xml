@@ -46,7 +46,11 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
-		<!-- AspectJ -->
+		
+		<!--
+			 AspectJ 
+			Spring AOP대신 사용할 AOP 관련 라이브러리	 
+		-->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
@@ -127,7 +131,7 @@
 		</dependency>
 
 
-		<!-- 파일을 업로드하기 위해 필요한 라이브러리 -->
+		<!-- Multipart 데이터를 처리하기 위한 라이브러리 -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
