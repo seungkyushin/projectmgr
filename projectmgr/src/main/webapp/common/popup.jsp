@@ -19,7 +19,7 @@
 $(document).ready(function(){
 var cookieMsg = getCookie("resultMsg");
 var resultMsg = decodeURIComponent(cookieMsg).replace(/\+/g, ' ');
- setPopup(resultMsg);
+ setPopup("${resultMsg}");
 });
 </script>
 

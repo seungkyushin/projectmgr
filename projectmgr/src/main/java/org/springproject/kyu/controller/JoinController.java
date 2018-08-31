@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springproject.kyu.dto.VisiterDto;
 import org.springproject.kyu.service.VisiterService;
 
@@ -26,7 +27,8 @@ public class JoinController {
 	@PostMapping(path="/addvisiter")
 	public String addVisiter( @ModelAttribute VisiterDto visiter,
 			HttpServletRequest req,
-			ModelMap modelMap) throws Exception{
+			RedirectAttributes redirectAtt,
+			ModelMap model) throws Exception{
 
 		String clientIp = (String)req.getAttribute("clientIp");
 
@@ -36,8 +38,8 @@ public class JoinController {
 			
 			switch(result){
 				case VisiterService.SUCCESS:
-					Message = "성공적으로 가입되었습니다!";
-					viewName = "main";
+					redirectAtt.addFlashAttribute("resultMsg", "성공적으로 가입되었습니다!");
+					viewName = "redirect:main";
 					break;
 				case VisiterService.FAILED:
 					Message = "알수 없는 오류로 가입에 실패하였습니다.";
@@ -48,7 +50,8 @@ public class JoinController {
 					viewName = "join";
 					break;
 			}
-		req.setAttribute("resultMsg", Message);
+			
+			model.addAttribute("resultMsg", Message);
 		return viewName;
 		
 	}

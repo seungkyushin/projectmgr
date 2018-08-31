@@ -40,6 +40,7 @@ public class WebMvcContextConfig extends WebMvcConfigurerAdapter{
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("main");
 		registry.addViewController("/main").setViewName("main");
+		registry.addViewController("/test").setViewName("testpage");
 	}
 
 	/*

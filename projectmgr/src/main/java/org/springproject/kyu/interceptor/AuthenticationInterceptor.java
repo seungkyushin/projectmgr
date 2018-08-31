@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springproject.kyu.config.ApplicationConfig;
 
 
 //< Ajax도 요청이 들어오면 Interceptor가 동작하게 되기 떄문에 excludePathPatterns를 통해서 제한한다
@@ -20,6 +21,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
+
 		//String serveltPath = request.getServletPath();
 		HttpSession httpSession = request.getSession();
 		

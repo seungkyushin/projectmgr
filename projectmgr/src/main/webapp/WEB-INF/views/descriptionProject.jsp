@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="assets/css/action.css" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/popup.css"/>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 	<body class="is-preload landing">
 		<div id="page-wrapper">
@@ -23,10 +24,9 @@
 					<div class="container">
 						<div class="review_box">
 							<div>
-								
-									<h3>방문자 한줄평
-								     		<a title="덧글달기" href="./comment?projectId=${requestScope.projectId}"><i style="float:right;clear:both" class="fas fa-comment-alt fa-2x"></i></a>				
-									</h3>
+								<h3>방문자 한줄평
+								  		<a title="덧글달기" href="./comment?projectId=${requestScope.projectId}"><i style="float:right;clear:both" class="fas fa-comment-alt fa-2x"></i></a>				
+								</h3>
 									
 								<span style="float:right"class="join_count"><strong><em id="avgScore">0/5.0</em></strong> | <em id="maxCount">0</em>건 등록</span> 
 							</div>
@@ -36,8 +36,9 @@
 							</ul>
 							
 							<p class="guide">
+
 							<span> <i class="fas fa-child fa-2x"></i> 실제 방문한 사용자가 남긴 평가입니다 <i class="fas fa-child fa-2x"></i></span>
-						</p>
+							</p>
 						
 						
 						<ul id="page-count">
@@ -60,7 +61,6 @@
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/template.js"></script>
 	<script src="assets/js/handlebars.min.js"></script>
-	
 <script type="template" id="list_item">
 
 <li class="list_item" style="list-style-type: none" >

@@ -47,7 +47,7 @@
                                     <div class="col-5 col-4-medium col-12-xsmall"></div>
                                     <div class="col-2 col-4-medium col-12-xsmall">
 										<ul class="actions stacked">
-											<li><input id="sendBtn" type="button" class="button primary fit" value="확인"></li>
+											<li><input id="sendBtn" type="button" class="button primary fit" value="로그인"></li>
 											</ul>
             						</div>
             						</div>

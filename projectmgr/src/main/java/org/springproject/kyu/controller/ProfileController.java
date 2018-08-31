@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -72,26 +73,24 @@ public class ProfileController {
 	@PostMapping(path="/modifyProfile")
 	public String modifyProfile(@ModelAttribute VisiterDto visiter,
 			@RequestParam("file") MultipartFile file,
-				HttpServletRequest req,
-			HttpServletResponse res,
+			HttpServletRequest req,
 			RedirectAttributes redirectAttr,
-			ModelMap modelMap) throws Exception{
+			Model model) throws Exception{
 
 		String ip = (String)req.getAttribute("clientIp");
-		String message = "";
 		String viewName = "";
 		
 		int resultVisiter = visiterService.updateVisiter(visiter, file, ip);
 
 		if( resultVisiter == VisiterService.SUCCESS) {
-			message = "회원 정보가 정상적으로 수정되었습니다.";
+			model.addAttribute("resultMsg", "회원 정보가 정상적으로 수정되었습니다.");
 			viewName = "main";
+			
 		}else {
-			message = "회원 정보 수정에 실패 하였습니다.";
+			redirectAttr.addFlashAttribute("resultMsg", "회원 정보 수정에 실패 하였습니다.");
 			viewName = "redirect:profile";
 		}
 			
-		req.setAttribute("resultMsg", message);
 		return viewName;
 	}
 	

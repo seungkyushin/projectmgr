@@ -5,11 +5,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springproject.kyu.dto.ProjectDto;
 import org.springproject.kyu.dto.UserCommentDto;
 import org.springproject.kyu.service.ProjectService;
@@ -25,35 +27,32 @@ public class UserCommentController {
 	ProjectService projectService;
 	@GetMapping("/comment")
 	public String showPage(@RequestParam(name="projectId") int projectId,
-			HttpServletRequest req) throws Exception{
+			Model model) throws Exception{
 		
 		ProjectDto projectDto = projectService.getProjectDto(projectId);
-		
-		req.setAttribute("name", projectDto.getName());
-		req.setAttribute("projectId", projectDto.getId());
+		model.addAttribute("name", projectDto.getName());
+		model.addAttribute("projectId", projectDto.getId());
 		return "comment";
 	}
 					
 	@PostMapping("/addcomment")
-	public String addComment(@ModelAttribute UserCommentDto data,
+	public ModelAndView addComment(@ModelAttribute UserCommentDto data,
 			HttpServletRequest req,
+			RedirectAttributes redirectAtt,
 			HttpSession sec) throws Exception{
 		String clientIp = (String)req.getAttribute("clientIp");
 		String email = (String)sec.getAttribute("email");
 		
-		int reuslt = userCommentService.addUserComment(data,email,clientIp);
-
-		if( reuslt != 0 ) {
-			req.setAttribute("url","./descriptionProject?id="+data.getProjectId());
-			req.setAttribute("resultMsg","덧글 남겨주셔서 감사합니다. 이전 페이지로 돌아갑니다.");
+		ModelAndView modelAndView = new ModelAndView();
+		int result = userCommentService.addUserComment(data,email,clientIp);
+		if( result != 0 ) {
+			modelAndView.setViewName("redirect:descriptionProject?id="+data.getProjectId());
+			redirectAtt.addFlashAttribute("resultMsg", "덧글 남겨주셔서 감사합니다.");
 		}
 		
-		return "comment";
+		return modelAndView;
 	}
-	
 
-	
-	
 	
 }
 	

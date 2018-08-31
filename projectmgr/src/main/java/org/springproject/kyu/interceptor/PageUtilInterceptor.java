@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springproject.kyu.config.ApplicationConfig;
 
 public class PageUtilInterceptor extends HandlerInterceptorAdapter {
 	@Override
@@ -17,27 +18,15 @@ public class PageUtilInterceptor extends HandlerInterceptorAdapter {
 		
 		//< 모든 요청에 대한 IP값을 구하여 request에 담아 둔다.
 		//< Controller 부분에서 request.getAttribute("clientIp")를 통해 요청한 IP를 알아 낼수 있다.
-		request.setAttribute("clientIp", getClientIP(request));
+		request.setAttribute("clientIp", ApplicationConfig.getClientIP(request));
 		return true;
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		
-		//< Controller에서 request 객체에 resultMsg, url String을 담아서 보내오게 된다.
-		//< 그 String 값을 다시 Cookie를 생성하여 보내준다.
-		//< 이렇게한 이유는 웹페이지에서 String값을 한번만 사용하기 위해서이다.(한번 string값 사용하고 삭제)
-		//< request 객체로 념겨 줬을때는 새로고침을 해도 값이 남아 잇어서 일회용 팝업창을 사용할 수 없다.
-		if( request.getAttribute("resultMsg") != null ) {
-			this.makeCookie("resultMsg",request,response);
-		}
-		
-		if( request.getAttribute("url") != null) {
-			this.makeCookie("url",request,response);
-		}
-
 	}
+	
 	public void makeCookie(String attributeName, 
 			HttpServletRequest req, HttpServletResponse res) {
 		String resultMsg = (String)req.getAttribute(attributeName);
@@ -68,24 +57,6 @@ public class PageUtilInterceptor extends HandlerInterceptorAdapter {
 			return null;
 		}
 	}
-	 public String getClientIP(HttpServletRequest request) {
-
-	     String ip = request.getHeader("X-FORWARDED-FOR"); 
-	     
-	     if (ip == null || ip.length() == 0) {
-	         ip = request.getHeader("Proxy-Client-IP");
-	     }
-
-	     if (ip == null || ip.length() == 0) {
-	         ip = request.getHeader("WL-Proxy-Client-IP");  // 웹로직
-	     }
-
-	     if (ip == null || ip.length() == 0) {
-	         ip = request.getRemoteAddr() ;
-	     }
-	     
-	     return ip;
-
-	 }
+	
 
 }
