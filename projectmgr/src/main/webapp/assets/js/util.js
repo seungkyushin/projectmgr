@@ -605,16 +605,7 @@ function startAnimation(elementName, type){
 
 
 function disablePopup(url){
-
-		 $(".popup_booking_wrapper").css("display","none");
-		 
-		 document.cookie = 'resultMsg=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
-		 
-		 if(url != ""){
-	
-			 document.cookie = 'url=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;';
-			 location.href = url;
-		 }	 
+	 $(".popup_booking_wrapper").css("display","none");
 }
 
 function setPopup(ResultMsg){
