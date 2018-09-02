@@ -68,17 +68,17 @@ type varchar(50)  NOT NULL
 Use projectmgr_db; 
 
 INSERT INTO file_info(save_path,url_path,type,name,create_date)
-VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/todo.gif','image/gif', 'todo.gif', now()); 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/todo.gif', 'image/gif', 'todo.gif', now()); 
 INSERT INTO file_info(save_path,url_path,type,name,create_date) 
-VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/naver.gif','image/gif', 'naver.gif', now()); 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/naver.gif','image/gif', 'naver.gif', now()); 
 INSERT INTO file_info(save_path,url_path,type,name,create_date) 
-VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/movie.png','image/png', 'move.png', now()); 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/movie.png','image/png', 'move.png', now()); 
 INSERT INTO file_info(save_path,url_path,type,name,create_date) 
-VALUES('C:\\Users\\Administrator\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/upload/defaultImage.jpg','image/jpg', 'defaultImage.jpg', now()); 
+VALUES('C:\\Users\\kyu\\git\\projectmgr\\projectmgr\\src\\main\\webapp\\images','images/upload/defaultImage.jpg','image/jpg', 'defaultImage.jpg', now()); 
+
 
 INSERT INTO project(name, url, sub_description, description, file_id) VALUES('TODO LIST','http://localhost:8080/Todo/main.jsp', '해야할 일을 등록하고 관리합니다.', 'MYSQL DB에 연결하여 입력한 데이터를 저장하고 AJAX를 통해 화면 갱신없이 DATA를 갱신하는 부분을 연습했습니다.',1);  
 INSERT INTO project(name, url, sub_description, description, file_id) VALUES('NAVER RESERVATION','http://localhost:8080/naverreserve/main', '상품을 예약하고 확인 및 관리 합니다.', 'edwith에서 제공하는 Full Stack Web Developer 강의로 공부하면서 웹에 대한 기초적인 개발기술인 HTML,JAVASCRIPT,CSS, JSP, SPRING을 활용해 봤습니다.',2); 
 INSERT INTO project(name, url, sub_description, description, file_id) VALUES('WEB DBMS','http://localhost:8080/main', '웹으로  DATA를 관리 합니다.', 'COMMING SOON',3);
-
 
 

@@ -144,7 +144,7 @@
 	  //< 프로젝트 정보를 갱신한다.
 		 $.ajax({
 			type : "GET",
-			url : "./api/project/0",
+			url : "./api/projectAllList",
 			success : function(response){
 					setProjectInfomation(response);
 					

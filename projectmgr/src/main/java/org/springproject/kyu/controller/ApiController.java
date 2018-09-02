@@ -42,15 +42,10 @@ public class ApiController {
 	/* id값에 따라 DB에 저장된 project들의 정보를 받아온다.
 	 * id값이 0일 경우 모든 project 정보를 받아 온다.
 	 */
-	@GetMapping(path="/project/{id}")
-	public Map<String, Object> getProjectList(@PathVariable("id") int id) throws Exception{
+	@GetMapping(path="/projectAllList")
+	public Map<String, Object> getProjectList() throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
-		
-		if( id == 0 ) 
 			resultMap.put("projectList", projectService.getProjectListAll());
-		else 
-			resultMap.put("projectList", projectService.getProjectList(id));
-
 		return resultMap;
 	}
 	@GetMapping("/test")
