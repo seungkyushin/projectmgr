@@ -68,10 +68,8 @@
 			startAnimation("#formData", "bounceIn");
 
 			$("#sendBtn").on("click", function(event) {
-
 				event.preventDefault();
 				login();
-
 			});
 
 			$("#formData").keypress(function(e) {

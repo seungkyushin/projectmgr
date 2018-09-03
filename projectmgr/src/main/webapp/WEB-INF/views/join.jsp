@@ -74,7 +74,7 @@
             						</div>
             					</div>
 								</form>
-							</section>
+						</section>
 					</div>
 				</div>
 				<%@ include file="/common/footer.jsp" %>
@@ -106,11 +106,9 @@
 		        	login();
 		        }
 		    });
-
 			//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
 			 callScript("assets/js/main.js");
 		});
-		
 		function login(){
 			if( isCheckForm() == true )
 			 {
