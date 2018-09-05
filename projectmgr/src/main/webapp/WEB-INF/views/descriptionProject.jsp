@@ -15,6 +15,8 @@
 	href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
 	integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
 	crossorigin="anonymous">
+	
+	
 </head>
 <body class="is-preload landing">
 	<div id="page-wrapper">
@@ -45,24 +47,22 @@
 				</div>
 
 			</div>
-
-
 		</div>
-
+		<hr>
 		<div class="container">
 			<div class="review_box">
 				<div>
 					<h3>
-						방문자 한줄평 <a title="덧글달기"
+						* 방문자 한줄평 *<a title="덧글달기"
 							href="./comment?projectId=${project.id}"><i
 							style="float: right; clear: both"
-							class="fas fa-comment-alt fa-2x"></i></a>
+							class="far fa-comment-alt fa-2x"></i></a>
 					</h3>
 
 					<span style="float: right" class="join_count"><strong><em
 							id="avgScore">0/5.0</em></strong> | <em id="maxCount">0</em>건 등록</span>
 				</div>
-
+		
 				<ul id="list_review" class="alt">
 					<!-- project 덧글 -->
 				</ul>
@@ -72,15 +72,15 @@
 					<span> <i class="fas fa-child fa-2x"></i> 실제 방문한 사용자가 남긴
 						평가입니다 <i class="fas fa-child fa-2x"></i></span>
 				</p>
-
-
-				<ul id="page-count">
-				</ul>
-
 			</div>
 		</div>
-
-		<%@ include file="/common/header.jsp"%>
+		<hr>
+	
+  		<div style="text-align:center;" id="page-navigate" data-grouppage=0 data-max=0>
+			<ul style="display:inline-block;" id="page-count"></ul>
+		</div>
+		
+		<%@ include file="/common/footer.jsp"%>	
 	</div>
 
 
@@ -108,18 +108,23 @@
 
 	<script>
 		$(document).ready(function() {
-			var projectId = ${project.id};
-			ajaxComment(projectId, 0);
+			var projectId = "${project.id}";
+			if(projectId == ""){
+				var param = getURLParameter(window.location.search);
+				projectId = param['id'];
+			}
+		
+			ajaxComment(projectId, 1);
 
 			//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
 			callScript("assets/js/main.js");
 
 		});
 
-		function ajaxComment(projectId, start) {
+		function ajaxComment(projectId, currentPage) {
 			$.ajax({
 				type : "GET",
-				url : "./api/comment/" + projectId + "/" + start,
+				url : "./api/comment/" + projectId + "/" + currentPage,
 				success : function(response) {
 					setCommentHTML(response);
 					setPageCount(response);
@@ -138,11 +143,7 @@
 		}
 		function setProjectHTML(responseData) {
 			var data = {};
-			data['name'] = $
-			{
-				r
-			}
-			projectInfo.name;
+			data['name'] = projectInfo.name;
 			data['subdescription'] = projectInfo.subdescription;
 			data['description'] = projectInfo.description;
 			data['image'] = projectInfo.image;
@@ -175,48 +176,94 @@
 
 			var avgScore = (Math.floor(responseData.avgScore * 10) / 10);
 			$("#avgScore").text(avgScore + "/5.0");
-			$("#maxCount").text(responseData.allCount);
+			$("#maxCount").text(responseData.allCommentCount);
 
 		}
 
+	
+		
 		//< 덧글 패이지 수를 설정합니다.
 		function setPageCount(responseData) {
 			$("#page-count").empty();
 
-			var pageCount = responseData.allCount / responseData.limit;
-			pageCount = Math.floor(pageCount);
+			//< 보여주는 페이지 수를 제한한다.
+			$("#page-navigate").data("grouppage",responseData.currentGroupPageCount);
+			$("#page-navigate").data("max",responseData.limitGroupPageCount);
+			
+			var currentGroupPageCount = responseData.currentGroupPageCount;
+					
+			var maxPageNum = responseData.limitGroupPageCount * currentGroupPageCount;
+			if(  maxPageNum >= responseData.maxPageCount){
+				maxPageNum = responseData.maxPageCount;
+			}
+			
+			var firstPageNum = maxPageNum == responseData.limitGroupPageCount ?  1 : ((currentGroupPageCount-1)*responseData.limitGroupPageCount)+1;
+					
+			$("#page-count").append(function() {
+				var html = '<li style="list-style-type:none;float:left;">';
+				return  html + '<a href="javascript:void(0)" id="groupPage-pre" class="fas fa-angle-double-left"></a></li>';
+			});
+			
+			for (var index = firstPageNum; index <= maxPageNum; index++) {
+				$("#page-count").append(function() {
+							var html = '<li style="list-style-type:none;float:left;">';
+							
+							if (responseData.currentPageCount  == index ) {
+								return html += '<a href="javascript:void(0)" class="icon fa-github" data-index='+ index + '>'+ index +'</a></li>';
+							}
 
-			if (responseData.allCount % responseData.limit > 0)
-				pageCount++;
-
-			for (var index = 1; index <= pageCount; index++) {
-				$("#page-count")
-						.append(
-								function() {
-
-									var html = '<li style="list-style-type:none;float:left;">';
-									if ((responseData.currentPage / responseData.limit) == index - 1) {
-										return html += '<a style="color:rgb(228, 76, 101)" href="javascript:void(0)">'
-												+ index + '</a></li>';
-									}
-
-									return html += '<a style="color:rgb(255, 255, 255)" href="javascript:void(0)">'
-											+ index + '</a></li>';
-
-								});
+							return html += '<a href="javascript:void(0)" class="icon alt fa-github" data-index='+ index + '>'+ index +'</a></li>';
+				});
+			}
+			
+			$("#page-count").append(function() {
+				var html = '<li style="list-style-type:none;float:left;">';
+				return html + '<a href="javascript:void(0)" id="groupPage-next" class="fas fa-angle-double-right"></a></li>';
+			});
+	
+		}
+		
+		
+		
+		$("#page-count").on("click", function(event) {
+			var pageNum = 0;
+			var grouppage = $("#page-navigate").data("grouppage");
+			var maxGroupPage = $("#page-navigate").data("max");
+			
+			if( event.target.id == "groupPage-pre"){
+				pageNum = ((grouppage-1)*maxGroupPage);
+				
+			}else if(event.target.id == "groupPage-next"){
+				pageNum = (grouppage*maxGroupPage)+1;
+			}else{
+				 pageNum = event.target.dataset.index ;
 			}
 
-			$("#page-count").on("click", function(event) {
-				var limit = $('#list_review').children().length;
-				var startNum = (event.target.innerText - 1) * limit;
-				var projectId = $
-				{
-					requestScope.projectId
-				}
-				;
-				ajaxComment(projectId, startNum);
-			});
+			if( !pageNum ){
+				return;
+			}
+			
+			var projectId = "${project.id}";
+			if(projectId == ""){
+				var param = getURLParameter(window.location.search);
+				projectId = param['id'];
+			}
+		
+			ajaxComment(projectId, pageNum);
+		});
+			
+		
+			
+		function changeCommentPage(resultGroupPage){
+			var projectId = "${project.id}";
+			if(projectId == ""){
+				var param = getURLParameter(window.location.search);
+				projectId = param['id'];
+			}
+			
+			ajaxComment(projectId, resultGroupPage);
 		}
+		
 		function changTypeClassName(type) {
 			//< 응원, 칭찬, 비난, 충고, 버그
 			var iconName = [ {
@@ -242,6 +289,7 @@
 
 			return result[0].className;
 		}
+		
 	</script>
 
 	<%@ include file="/common/popup.jsp"%>

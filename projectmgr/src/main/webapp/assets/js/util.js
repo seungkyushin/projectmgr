@@ -604,7 +604,7 @@ function startAnimation(elementName, type){
 }
 
 
-function disablePopup(url){
+function disablePopup(){
 	 $(".popup_booking_wrapper").css("display","none");
 }
 
@@ -615,9 +615,15 @@ function setPopup(ResultMsg){
 	 $('#msg').text(ResultMsg);
 	 $(".popup_booking_wrapper").css("display","block");
 }
-
-function getCookie(name) {
-	  var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-	  return value? value[2] : "";
-	};
-
+function getURLParameter(urlString){
+	var param = {};
+	var url = urlString.split('?');
+	
+	var values = url[1].split('&');
+	values.forEach(function(d){
+		var data = d.split('=');
+		param[data[0]] = data[1];
+	});
+	
+	return param;
+}

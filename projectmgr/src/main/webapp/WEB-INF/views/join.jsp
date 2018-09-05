@@ -139,14 +139,14 @@
 			}
 			
 			if( passwordCheck.length <= 0 || password != passwordCheck){
-				checkMsgHTML += " [<strong style='color:#e44c65'>비밀번호 확인</strong>] ";
+				checkMsgHTML += " [<strong style='color:#e44c65'>비밀번호 다름</strong>] ";
 				startAnimation("#passwordCheck","shake");
 				result = false;
 			}
 			
 			
-					
-			if( email.length <= 0 || email.match(/\w@\w.\w/) == null)
+			var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 		
+			if( email.length <= 0 || regExp.test(email) == false )
 			{
 				checkMsgHTML += " [<strong style='color:#e44c65'>이메일</strong>] ";
 				startAnimation("#email","shake");
@@ -155,7 +155,7 @@
 
 			
 			if( result == false){
-				checkMsgHTML += "를 확인해 주세요!";
+				checkMsgHTML += "<br>확인해 주세요!";
 				$("#checkmsg").html(checkMsgHTML);
 			}
 			

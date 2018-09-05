@@ -17,6 +17,7 @@ public class UserCommentDao {
 	private SqlSession sqlSession;
 	private String namesapce = "org.springproject.kyu.mapper.UserCommentMapper";
 	public static final int LIMIT = 5;
+
 	
 	public List<UserCommentDto> selectAll() 
 			throws EmptyResultDataAccessException, Exception{

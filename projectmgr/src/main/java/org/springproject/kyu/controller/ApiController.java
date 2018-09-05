@@ -56,11 +56,13 @@ public class ApiController {
 		return new ResponseEntity<>(list,HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping(path="/comment/{projectId}/{start}")
+	@GetMapping(path="/comment/{projectId}/{currentPage}")
 	public Map<String, Object> getCommentList(@PathVariable("projectId") int projectId,
-											  @PathVariable("start") int start) throws Exception{
+											  @PathVariable("currentPage") int currentPage) throws Exception{
 		Map<String, Object> resultMap = new HashMap<>();
 		List<Object> paramList = new ArrayList<>();
+
+		int start  = (currentPage-1)*UserCommentDao.LIMIT;
 		CriteriaDto criteria = new CriteriaDto(projectId,start,UserCommentDao.LIMIT,UserCommentDao.LIMIT);
 		
 		List<UserCommentDto> userCommentDto = userCommentService.getUserCommentByProjectId(criteria);
@@ -77,11 +79,33 @@ public class ApiController {
 			paramList.add(paramMap);
 		}
 		
+		int commentsAllCount = userCommentService.getUserCommentCount(projectId);
+		int maxPageCount = commentsAllCount/UserCommentDao.LIMIT;
+		if( commentsAllCount % UserCommentDao.LIMIT > 0) {
+			maxPageCount += 1;
+		}
+		
+		int currentGroupPageCount = (currentPage/5);
+		if( currentPage % 5 > 0 ) {
+			currentGroupPageCount++;
+		}
+
+		//< 덧글
 		resultMap.put("comments", paramList);
-		resultMap.put("allCount",userCommentService.getUserCommentCount(projectId) );
-		resultMap.put("limit", UserCommentDao.LIMIT );
+		resultMap.put("allCommentCount",commentsAllCount );
+		
+		//< 페이지
+		resultMap.put("currentPageCount",currentPage );
+		resultMap.put("limitPageCount", UserCommentDao.LIMIT);
+		resultMap.put("maxPageCount",maxPageCount );
+		
+		//< 페이지 그룹
+		resultMap.put("currentGroupPageCount",currentGroupPageCount);
+		resultMap.put("limitGroupPageCount",5);
+				
 		resultMap.put("avgScore",userCommentService.getUserCommentAvgScore(userCommentDto) );
-		resultMap.put("currentPage",start );
+	
+		
 		
 		return resultMap;
 	}
