@@ -10,16 +10,14 @@
 			
 					<p id="msg" style="color:white"></p>
 			
-					<a href="javascript:disablePopup(getCookie('url'))" class="button small"><span>확인</span></a>
+					<a href="javascript:disablePopup()" class="button small"><span>확인</span></a>
 				</div>
 		</div>
 </div>
 
 <script>
 $(document).ready(function(){
-var cookieMsg = getCookie("resultMsg");
-var resultMsg = decodeURIComponent(cookieMsg).replace(/\+/g, ' ');
- setPopup(resultMsg);
+ setPopup("${resultMsg}");
 });
 </script>
 

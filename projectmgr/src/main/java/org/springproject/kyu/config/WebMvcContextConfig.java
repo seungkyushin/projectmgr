@@ -16,12 +16,13 @@ import org.springproject.kyu.interceptor.AuthenticationInterceptor;
 import org.springproject.kyu.interceptor.PageUtilInterceptor;
 
 
-/*
- * Spring 프레임워크의 어노 테이션 기반 트랜잭션 관리를 사용할 수 있도록 한다.
+/* Spring 프레임워크의 어노 테이션 기반 트랜잭션 관리를 사용할 수 있도록 한다.
  * <tx:annotation-driven>
  */
 @Configuration
-@EnableWebMvc //<DispatcherServlet의 RequestMappingHandlerMapping, RequestMappingHandlerAdapter, ExceptionHandlerExceptionResolver, MessageConverter 등 Web에 필요한 빈들을 대부분 자동으로 설정해준다.
+/*<DispatcherServlet의 RequestMappingHandlerMapping, RequestMappingHandlerAdapter, 
+ * ExceptionHandlerExceptionResolver, MessageConverter 등 Web에 필요한 빈들을 대부분 자동으로 설정해준다.*/
+@EnableWebMvc 
 @ComponentScan(basePackages = { "org.springproject.kyu.controller", "org.springproject.kyu.exception" })
 public class WebMvcContextConfig extends WebMvcConfigurerAdapter{
 
@@ -34,12 +35,12 @@ public class WebMvcContextConfig extends WebMvcConfigurerAdapter{
 	}
 
 
-	
 	//<
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("main");
 		registry.addViewController("/main").setViewName("main");
+		registry.addViewController("/test").setViewName("testpage");
 	}
 
 	/*
@@ -91,6 +92,9 @@ public class WebMvcContextConfig extends WebMvcConfigurerAdapter{
 		return resolver;
 	}
 	
+	/* Dispatcher Servlet에 Content-type인 'multipart/form-data' 가 들어오면 MultipartResolver를 사용하기 때문에
+	 * Spring Container에 Baen으로 등록한다.
+	 * */
 	@Bean
 	public MultipartResolver multipartResolver() {
 		org.springframework.web.multipart.commons.CommonsMultipartResolver mpResolver = new org.springframework.web.multipart.commons.CommonsMultipartResolver ();

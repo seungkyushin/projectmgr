@@ -20,12 +20,9 @@
 
 	// Play initial animations on page load.
 		$window.on('load', function() {
-			console.log("js 로딩 완료");
 			window.setTimeout(function() {
 				$body.removeClass('is-preload');
 			}, 100);
-			
-			
 		});
 
 	// Touch mode.

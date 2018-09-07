@@ -1,10 +1,9 @@
 package org.springproject.kyu.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartResolver;
 import org.springproject.kyu.dto.VisiterDto;
-public interface VisiterService {
 
+public interface VisiterService {
 	public static final int SUCCESS = 1;
 	public static final int FAILED = 0;
 	public static final int ERROR_DUPLICATE_FOR_EMAIL = -1;

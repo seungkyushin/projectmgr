@@ -2,12 +2,11 @@ package org.springproject.kyu.mapper.querystring;
 
 public class Visiter {
 	
-	// id,name,email,organization,last_login
 	public static final String TABLE_NAME = "visiter";
 	
 	/************************************ SELECT ***********************************************/
 	public static final String SELECT_ALL = "SELECT id,name,password,email,organization,"
-			+ "file_id as fileId, create_date as createData, last_login_date as lastLoginDate FROM " 
+			+ "file_id as fileId, create_date as createDate, last_login_date as lastLoginDate FROM " 
 			+ TABLE_NAME;
 	public static final String SELECT_BY_EMAIL = SELECT_ALL + " WHERE email=#{email}";
 	public static final String SELECT_BY_ID = SELECT_ALL + " WHERE id=#{id}";

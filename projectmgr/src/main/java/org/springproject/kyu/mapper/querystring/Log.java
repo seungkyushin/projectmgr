@@ -2,7 +2,6 @@ package org.springproject.kyu.mapper.querystring;
 
 public class Log {
 	
-	// id,name,email,organization,last_login
 			public static final String TABLE_NAME = " log ";
 			public static final String COLUMNS = " id, type, description, visiter_email AS visiterEmail,"
 												+ "client_ip AS clientIp, create_date AS createDate";

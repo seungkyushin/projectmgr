@@ -20,7 +20,11 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 
 
 @Configuration //< Spring Container가 스캔하면 해당 파일은 설정파일로 인식한다.
-@EnableTransactionManagement //< 
+/* 트랜잭션 매니저를 활성화 한다. 내부적으로 AOP(JDK Dynamic Proxy)를 사용하고
+ * TransactionManagementConfigurer의 구현을 통해 annotationDrivenTransactionManager를 통해 트랜잭션 매니저를 등록한다.
+ *  @EnableTransactionManagement는 return type을 통해 TrasactionManagerBean을 찾는다.
+ * */ 
+@EnableTransactionManagement 
 @MapperScan("org.springproject.kyu.mapper") //< mybatis를 위한 @Select, @Insert 어노테이션을 스캔하기 위해
 public class DBConfig implements TransactionManagementConfigurer{
 
@@ -59,14 +63,12 @@ public class DBConfig implements TransactionManagementConfigurer{
 	
 	
 	//< XML에 설정하지 않고 TransactionManagementConfigurer Interface를 구현하여 TransactionManager를 설정한다.
-	//< TransactionManager는 Bean으로 등록해야하며 DataSourceTransactionManager를 사용
+	//< TransactionManager는 Bean으로 등록해야하며 DataSourceTransactionManager를 사용 한다.
 	@Override
 	public PlatformTransactionManager annotationDrivenTransactionManager() {
 		return transactionManager();
 	}
 	
-		
-
 	/*
 	 * Spring에서 지원하는 JdbcTemplate은 3가지가 있다. JdbcTemplate, NamedParameterJdbcTemplate, SimpleJdbcTemplate
 	 * 생성시 DataSource가 필요하며 하는 역할은 쿼리를 이용해 DB의 데이터를 받아온다.
@@ -76,9 +78,6 @@ public class DBConfig implements TransactionManagementConfigurer{
 	public NamedParameterJdbcTemplate jdbcTemplate(DataSource dataSource) {
 		return new NamedParameterJdbcTemplate(dataSource);
 	}
-
-
-
 
 	/*
 	 * Mabatis는 SqlSession이라는 자바 인터페이스를 이용해서 명령어 실행, Mapper획득, 트랜잭션 관리등을 맡게된다.

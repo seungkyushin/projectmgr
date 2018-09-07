@@ -2,7 +2,6 @@ package org.springproject.kyu.mapper.querystring;
 
 public class FileInfo {
 
-	// id,name,email,organization,last_login
 		public static final String TABLE_NAME = " file_info ";
 		public static final String COLUMNS = " id,save_path AS savePath,url_path AS urlPath,"
 											+ "type,name,create_date AS createDate ";

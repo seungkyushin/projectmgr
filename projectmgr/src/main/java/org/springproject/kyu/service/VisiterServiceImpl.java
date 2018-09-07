@@ -52,7 +52,7 @@ public class VisiterServiceImpl implements VisiterService {
 			
 			return SUCCESS;
 		} catch (DuplicateKeyException e) {
-			logger.error("가입실패:동일 Email 존재 | {} | {} | {}", ip, data.getEmail(), e.getMessage());
+			logger.error("가입실패:동일 Email 존재 | {} | {} | {}", ip, data.getEmail(), e.toString());
 			return ERROR_DUPLICATE_FOR_EMAIL;
 		} 
 	}
@@ -95,7 +95,7 @@ public class VisiterServiceImpl implements VisiterService {
 				try {
 					return visiterDao.selectByEmail(email);
 				} catch (EmptyResultDataAccessException e) {
-					logger.error("방문자 email 일치하는 데이터 없음 | {}", e.getMessage());
+					logger.error("방문자 email 일치하는 데이터 없음 | {}", e.toString());
 				} 
 		}
 
@@ -112,7 +112,6 @@ public class VisiterServiceImpl implements VisiterService {
 				return visiterDao.selectById(id);
 			}
 		}
-
 		return null;
 	}
 

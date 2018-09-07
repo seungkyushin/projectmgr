@@ -3,13 +3,18 @@ package org.springproject.kyu.service;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springproject.kyu.dao.UserCommentDao;
+import org.springproject.kyu.dto.CommentPageDto;
+import org.springproject.kyu.dto.SearchDto;
 import org.springproject.kyu.dto.UserCommentDto;
 import org.springproject.kyu.dto.VisiterDto;
 
@@ -18,25 +23,45 @@ public class UserCommentServiceImpl implements UserCommentService{
 
 	@Autowired
 	UserCommentDao userCommentDao;
-	
 	@Autowired
 	VisiterService visiterService;
-	
 	@Autowired 
 	DateFormat  dateFormat;
-	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+
 	@Override
-	public List<UserCommentDto> getUserCommentByProjectId(int id, int start) {
-		return userCommentDao.selectByProjectId(id,start);
+	public List<UserCommentDto> getUserComments(CommentPageDto CommentPage)
+			throws EmptyResultDataAccessException, Exception {
+		
+			Map<String,Object> params = new HashMap<>();
+			
+			params.put("action", "LIMIT");
+			params.put("projectId", CommentPage.getProjectId());
+			params.put("start", CommentPage.getStart());
+			params.put("end", UserCommentDao.LIMIT);
+	
+			return userCommentDao.select(params);
 	}
 
 	@Override
-	public List<UserCommentDto> getUserCommentByVisiterId(int id, int start) {
-		return userCommentDao.selectByVisiterId(id,start);
+	public List<UserCommentDto> getUserComments(CommentPageDto CommentPage, SearchDto search)
+			throws EmptyResultDataAccessException, Exception {
+		
+		Map<String,Object> params = new HashMap<>();
+		
+		params.put("action", "LIMIT");
+		params.put("projectId", CommentPage.getProjectId());
+		params.put("start", CommentPage.getStart());
+		params.put("end", UserCommentDao.LIMIT);
+		
+		params.put("searchType", search.getType());
+		params.put("keyword", search.getkeyWord());
+
+		return userCommentDao.select(params);
 	}
 
+	
 	@Override
 	public int addUserComment(UserCommentDto data, String email, String ip) throws Exception{
 		
@@ -61,29 +86,15 @@ public class UserCommentServiceImpl implements UserCommentService{
 	}
 
 	@Override
-	public int getUserCommentCount(int projectId) {
+	public int getUserCommentCount(int projectId) throws Exception {
 		return userCommentDao.selectCountByPorjectId(projectId);
 	}
 
-	@Override
-	public List<UserCommentDto> getAllUserCommentByProjectId(int id) {
-		return userCommentDao.selectAllByProjectId(id);
-	}
 
 	@Override
-	public float getUserCommentAvgScore(int projectId) {
-		List<UserCommentDto> UserCommentList =  getAllUserCommentByProjectId(projectId);
-		
-		float sumScore = 0;
-		
-		for( UserCommentDto data : UserCommentList)
-		{
-			sumScore += data.getScore();
-		}
-		
-		sumScore /=  UserCommentList.size();
-		
-		return sumScore;
+	public float getUserCommentAvgScore(int projectId)throws Exception {
+		return userCommentDao.selectScoreAvgByPorjectId(projectId);
 	}
 
+	
 }

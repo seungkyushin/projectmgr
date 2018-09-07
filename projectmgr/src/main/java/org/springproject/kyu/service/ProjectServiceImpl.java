@@ -1,6 +1,5 @@
 package org.springproject.kyu.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,16 +14,13 @@ import org.springproject.kyu.dao.FileInfoDao;
 import org.springproject.kyu.dao.ProjectDao;
 import org.springproject.kyu.dto.FileInfoDto;
 import org.springproject.kyu.dto.ProjectDto;
-
 @Service
 public class ProjectServiceImpl implements ProjectService{
 
 	@Autowired
 	ProjectDao projectDao;
-	
 	@Autowired
 	FileInfoDao fileInfoDao;
-	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
@@ -48,10 +44,9 @@ public class ProjectServiceImpl implements ProjectService{
 				fileInfoDto = fileInfoDao.selectById(data.getFileId());
 				pramMap.put("image", fileInfoDto.getUrlPath());
 			}  catch (EmptyResultDataAccessException e) {
-				logger.error("{}",e.getMessage());
+				logger.error("{}",e.toString());
 				pramMap.put("image", "images/notfoundImage.png");
-			}
-		
+			} 
 			
 			
 			resultList.add(pramMap);
@@ -76,7 +71,7 @@ public class ProjectServiceImpl implements ProjectService{
 					fileInfoDto = fileInfoDao.selectById(projectDto.getFileId());
 					result.put("image", fileInfoDto.getUrlPath());
 			} catch (EmptyResultDataAccessException e) {
-				logger.error("{}",e.getMessage());
+				logger.error("{}",e.toString());
 				result.put("image", "images/notfoundImage.png");
 			}
 			

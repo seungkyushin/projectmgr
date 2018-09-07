@@ -9,9 +9,7 @@
 	<link rel="stylesheet" href="assets/css/action.css" />
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/popup.css"/>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
- </head>
- 
+</head>
 <body class="is-preload landing">
 	<div id="page-wrapper"> 
 
@@ -146,9 +144,14 @@
 	  //< 프로젝트 정보를 갱신한다.
 		 $.ajax({
 			type : "GET",
-			url : "./api/project/0",
+			url : "./api/projectAllList",
 			success : function(response){
 					setProjectInfomation(response);
+					
+					window.setTimeout(function() {
+						$("body").removeClass('is-preload');
+					}, 1000);
+					
 				},
 			error : function(request,status,error){
 						alert(request.responseText);

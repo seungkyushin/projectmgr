@@ -3,12 +3,17 @@
 
 	 <display-name>Spring JavaConfig Sample</display-name>
 	 
+	 <!-- 
+	 	전역으로 선언된 root WebApplicationContext를 설정 한다.
+	  	Context에 사용할 Class는 springframework에서 제공하는 AnnotationConfigWebApplicationContext를 사용하고 
+	  	설정값은 ApplicationConfig Class를 참고한다.
+	 -->
+	 
 	<context-param>
 		<param-name>contextClass</param-name>
 		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext
 		</param-value>
 	</context-param>
-	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>org.springproject.kyu.config.ApplicationConfig</param-value>
@@ -17,9 +22,8 @@
 
 	
 	<!-- 모든 Servlet과 filter들에 의해 공유되는 Spring Container를 생성합니다.-->
-	<!-- 어떤 특정한 이벤트가 일어났을 때 동작한다.  -->
-	<!-- run on server 하면 서버가 막 올라가는 시점 즉 Context가 로딩되는 이벤트가 일어났을 때 이 클래스를 실행-->
-	<!-- Web.xml에 있는 context-param으로 등록되어 있는 부분들을 참고한다.  -->
+	<!-- run on server 하면 서버가 막 올라가는 시점 즉 Context가 로딩되는 이벤트가 일어났을 때 이 클래스를 실행되어 Context를 Container에 등록 시킨다.-->
+	<!-- Web.xml에 있는 context-param으로 등록되어 있는 부분들을 Container에 적용  -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener
 		</listener-class>
@@ -81,5 +85,10 @@
 		<error-code>500</error-code>
 		<location>/WEB-INF/views/error/server.jsp</location>
 	</error-page> -->
+
+ <session-config>
+  <session-timeout>10</session-timeout>
+ </session-config>
+
 
 </web-app>

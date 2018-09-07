@@ -44,7 +44,6 @@ public class VisiterDao {
 	 
 	 public int updateInfo(VisiterDto data) throws Exception{
 		 return sqlSession.update(namesapce + ".updateInfoByEmail", data);
-
 	 }
 	 
 	/*  
