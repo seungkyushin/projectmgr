@@ -61,27 +61,28 @@
 
 					<span style="float: right" class="join_count"><strong><em
 							id="avgScore">0/5.0</em></strong> | <em id="maxCount">0</em>건 등록</span>
-				
-				<div class="row htr-uniform htr-50">
-					<div class="col-4 col-12-xsmall">
-						<select id="searchType">
-							<option value="none">- 검색 종류 -</option>
-							<option value="email">이메일</option>
-							<option value="content">내용</option>
-							<option value="score">점수</option>
-							<option value="commentType">덧글종류</option>
-							<option value="registerDate">등록날짜/option>
-						</select>
-					</div>
-					<div class="col-4 col-12-xsmall">
-						<input type="text" id="keyword" value="" placeholder="입력" maxlength="10">
-					</div>
-					<div class="col-1 col-12-xsmall">
-						<input type="button" id="searchBtn" value="찾기">
-					</div>
+
+					<ul class="actions">
+							<li><select id="searchType">
+									<option value="none">- 검색 종류 -</option>
+									<option value="email">이메일</option>
+									<option value="content">내용</option>
+									<option value="score">점수</option>
+									<option value="commentType">덧글종류</option>
+									<option value="registerDate">등록날짜</option>
+								</select>
+							</li>
 					
-				</div>
-				<br>
+								<li><input type="text" id="keyword" value="" placeholder="입력"
+									maxlength="15"></li>
+
+								<li><input type="button" id="searchBtn" value="찾기"></li>
+								<li><input type="button" id="clearSearchBtn" value="찾기값 초기화"></li>
+					</ul>
+
+
+
+					<br>
 				</div>
 		
 				<ul id="list_review" class="alt">
@@ -129,35 +130,42 @@
 
 	<script>
 		$(document).ready(function(){
-			ajaxComment(1);
+			ajaxComment("api/commentList",1);
 			
 			$("#searchBtn").on("click",function(){
-				ajaxComment(1);
+				ajaxComment("api/searchComment",1);
 			});
 			
-			
+			$("#clearSearchBtn").on("click",function(){
+				$("#searchType").find('option:first').attr('selected', 'selected');
+				$("#keyword").val('');
+				ajaxComment("api/clearSearch",1);
+			});
 			
 			//< 애니매이션을 다시 설정해주기위해 스크립트를 불러온다.
 			callScript("assets/js/main.js");
 		});
 
-		function ajaxComment(pageNum) {
+		function getProjectId(){
 			var projectId = "${project.id}";
 			if(projectId == ""){
 				var param = getURLParameter(window.location.search);
 				projectId = param['id'];
 			}
+			return projectId;
+		}
+
+		function ajaxComment(url,pageNum) {
 			
 			var sendData = {};
 			sendData['reqPageNum'] = pageNum;
-			sendData['projectId'] = projectId;
+			sendData['projectId'] = getProjectId();
 			sendData['type'] = $("#searchType").val();
 			sendData['keyWord'] = $("#keyword").val(); 
 			
-			
 			$.ajax({
 				type : "POST",
-				url : "api/comment",
+				url : url,
 				data : sendData,
 				success : function(response) {
 					setCommentHTML(response);
@@ -277,9 +285,23 @@
 			if( !pageNum || pageNum == 0){
 				return;
 			}
+			var test = getCookie("searchType");
+			var test1 = getCookie("keyword");
+			if( getCookie("searchType") && getCookie("keyword") ){
+				ajaxComment("api/searchComment",pageNum);
+			}else{
+				ajaxComment("api/commentList",pageNum);
+			}
 		
-			ajaxComment(pageNum);
+			
 		});
+		
+		var getCookie = function(name) {
+			  var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+			  return value? value[2] : null;
+			};
+
+			
 		
 		function changTypeClassName(type) {
 			//< 응원, 칭찬, 비난, 충고, 버그
