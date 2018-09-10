@@ -2,8 +2,6 @@ package org.springproject.kyu.mapper;
 
 import static org.springproject.kyu.mapper.querystring.Visiter.*;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -13,14 +11,10 @@ import org.springproject.kyu.dto.VisiterDto;
 
 public interface VisiterMapper {
 
-	// < 모든 Visiter Data를 확인
-	@Select(SELECT_ALL)
-	public List<VisiterDto> getAllList();
-
 	// < 해당 email의 data를 확인
 	@Select(SELECT_BY_EMAIL)
 	public VisiterDto getByEmail(@Param("email") String email);
-
+	
 	// < 해당 email의 data를 확인
 	@Select(SELECT_BY_ID)
 	public VisiterDto getById(@Param("id") int id);

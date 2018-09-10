@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springproject.kyu.dao.UserCommentDao;
@@ -73,37 +72,62 @@ public class ApiController {
 		return getUserComments(commentPage, null);
 	}
 
-	
-	@PostMapping(path = "/searchComment")
+	@PostMapping(path = "/searchCommentList")
 	public Map<String, Object> getSearchCommentList(@ModelAttribute CommentPageDto commentPage,
-			@ModelAttribute SearchDto search, HttpServletResponse resonse,
+			HttpServletResponse resonse,
 			@CookieValue(name = "searchType", required = false) String searchType,
 			@CookieValue(name = "keyword", required = false) String keyword) throws Exception {
+		
+		if( searchType == null || keyword == null )
+			return null;
+	
+		// < 요청 페이지 기준으로 시작 레코드 번호를 계산한다. (요청페이지 번호 - 1) * 페이지당 최대 덧글수
+		int start = (commentPage.getReqPageNum() - 1) * UserCommentDao.LIMIT;
+		commentPage.setStart(start);
+	
+		SearchDto search = new SearchDto();
+		// < 쿠키값에 저장 되어 있을때
+		search.setType(searchType);
+		search.setkeyWord(keyword);
+			
+		return getUserComments(commentPage, search);
+	}
+	
+	
+	
+	@PostMapping(path = "/searchComment")
+	public Map<String, Object> getSearchComment(@ModelAttribute CommentPageDto commentPage,	@ModelAttribute SearchDto search, 
+			HttpServletResponse response, HttpServletRequest request,
+			@CookieValue(name = "searchType", required = false) String searchType,
+			@CookieValue(name = "keyword", required = false) String keyWord) throws Exception {
 
 		// < 요청 페이지 기준으로 시작 레코드 번호를 계산한다. (요청페이지 번호 - 1) * 페이지당 최대 덧글수
 		int start = (commentPage.getReqPageNum() - 1) * UserCommentDao.LIMIT;
 		commentPage.setStart(start);
+		
+		if (searchType != null && keyWord != null) {
+			Cookie[] cookies = request.getCookies();
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("searchType") == true || cookie.getName().equals("keyword") == true) {
+					cookie.setMaxAge(0);
+					cookie.setPath("/");
+					response.addCookie(cookie);
+				}
 
-		if (searchType == null && keyword == null) {
-			if (search != null && (search.getType().equals("none") == false 
-									&& search.getkeyWord().equals("") == false)) {
-
-				Cookie cookieType = new Cookie("searchType", search.getType()); // 쿠키를 생성
-				cookieType.setMaxAge(60 * 60 * 24); // 쿠키의 유효기간 1일 (86400초)
-				cookieType.setPath("/");
-				resonse.addCookie(cookieType);
-
-				Cookie cookieKeyword = new Cookie("keyword", search.getkeyWord()); // 쿠키를 생성
-				cookieKeyword.setMaxAge(60 * 60 * 24); // 쿠키의 유효기간 1일 (86400초)
-				cookieKeyword.setPath("/");
-				resonse.addCookie(cookieKeyword);
 			}
-		} else {
-			// < 쿠키값에 저장 되어 있을때
-			search.setType(searchType);
-			search.setkeyWord(keyword);
-	
 		}
+		
+
+		Cookie cookieType = new Cookie("searchType", search.getType()); // 쿠키를 생성
+		cookieType.setMaxAge(60 * 60 * 24); // 쿠키의 유효기간 1일 (86400초)
+		cookieType.setPath("/");
+		response.addCookie(cookieType);
+
+		Cookie cookieKeyword = new Cookie("keyword", search.getkeyWord()); // 쿠키를 생성
+		cookieKeyword.setMaxAge(60 * 60 * 24); // 쿠키의 유효기간 1일 (86400초)
+		cookieKeyword.setPath("/");
+		response.addCookie(cookieKeyword);
+		
 		
 		return getUserComments(commentPage, search);
 	}
@@ -138,17 +162,21 @@ public class ApiController {
 		List<Object> paramList = new ArrayList<>();
 		List<UserCommentDto> userComments = null;
 		
+		/* 현재 프로젝트 기준의 모든 덧글의 수 */
+		int commentsAllCount = 0;
+		
 		if( search == null ) {
 			userComments = userCommentService.getUserComments(commentPage);
+			
+			commentsAllCount = userCommentService.getUserCommentCount(commentPage.getProjectId());
+
 		}else {
 			userComments = userCommentService.getUserComments(commentPage,search);
-		}
 			
+			commentsAllCount = userCommentService.getUserCommentCount(commentPage.getProjectId(),search);
+		}
+
 		
-
-		/* 현재 프로젝트 기준의 모든 덧글의 수 */
-		int commentsAllCount = userCommentService.getUserCommentCount(commentPage.getProjectId());
-
 		/*
 		 * 최대 페이지 카운트 모든 덧글 수(프로젝트 기준) / 페이지당 덧글 제한 수 = 최대 페이지 수
 		 */
@@ -227,7 +255,7 @@ public class ApiController {
 		e.printStackTrace(pw);
 		pw.flush();
 		logger.error("{}", baos.toString());
-		return "Not Found data";
+		return "NOT FOUND ERROR";
 	}
 
 	@ResponseStatus(HttpStatus.NOT_FOUND)
@@ -238,7 +266,7 @@ public class ApiController {
 		e.printStackTrace(pw);
 		pw.flush();
 		logger.error("{}", baos.toString());
-		return "알수없는 오류";
+		return "UNKOWN ERROR";
 	}
 
 }

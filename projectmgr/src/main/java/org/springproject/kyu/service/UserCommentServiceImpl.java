@@ -29,19 +29,16 @@ public class UserCommentServiceImpl implements UserCommentService{
 	DateFormat  dateFormat;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-
 	@Override
 	public List<UserCommentDto> getUserComments(CommentPageDto CommentPage)
-			throws EmptyResultDataAccessException, Exception {
-		
-			Map<String,Object> params = new HashMap<>();
-			
-			params.put("action", "LIMIT");
-			params.put("projectId", CommentPage.getProjectId());
-			params.put("start", CommentPage.getStart());
-			params.put("end", UserCommentDao.LIMIT);
+		throws EmptyResultDataAccessException, Exception {
+		Map<String,Object> params = new HashMap<>();
+		params.put("action", "LIMIT");
+		params.put("projectId", CommentPage.getProjectId());
+		params.put("start", CommentPage.getStart());
+		params.put("end", UserCommentDao.LIMIT);
 	
-			return userCommentDao.select(params);
+		return userCommentDao.select(params);
 	}
 
 	@Override
@@ -49,7 +46,6 @@ public class UserCommentServiceImpl implements UserCommentService{
 			throws EmptyResultDataAccessException, Exception {
 		
 		Map<String,Object> params = new HashMap<>();
-		
 		params.put("action", "LIMIT");
 		params.put("projectId", CommentPage.getProjectId());
 		params.put("start", CommentPage.getStart());
@@ -86,15 +82,33 @@ public class UserCommentServiceImpl implements UserCommentService{
 	}
 
 	@Override
-	public int getUserCommentCount(int projectId) throws Exception {
-		return userCommentDao.selectCountByPorjectId(projectId);
+	public int getUserCommentCount(int projectId, SearchDto search) throws Exception {
+		Map<String,Object> params = new HashMap<>();
+		params.put("action", "COUNT");
+		params.put("projectId", projectId);
+		params.put("searchType", search.getType());
+		params.put("keyword", search.getkeyWord());
+		
+		return userCommentDao.selectCountByPorjectId(params);
 	}
 
 
 	@Override
+	public int getUserCommentCount(int projectId) throws Exception {
+		Map<String,Object> params = new HashMap<>();
+		params.put("action", "COUNT");
+		params.put("projectId", projectId);
+		
+		return userCommentDao.selectCountByPorjectId(params);
+	}
+
+	
+	@Override
 	public float getUserCommentAvgScore(int projectId)throws Exception {
 		return userCommentDao.selectScoreAvgByPorjectId(projectId);
 	}
+
+
 
 	
 }

@@ -1,8 +1,5 @@
 package org.springproject.kyu.dao;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -17,14 +14,11 @@ public class VisiterDao {
 	 private SqlSession sqlSession;
 	 private String namesapce = "org.springproject.kyu.mapper.VisiterMapper";
 	 
-	 public List<VisiterDto> selectAll() throws EmptyResultDataAccessException, Exception{
-		  return sqlSession.selectList(namesapce + ".getAllList");
-	 }
 	 	    
 	 public VisiterDto selectByEmail(String email) throws EmptyResultDataAccessException, Exception{
 		 return  sqlSession.selectOne(namesapce + ".getByEmail",email);
-	 } 
-	 
+	 }
+		 
 	 public VisiterDto selectById(int id) throws EmptyResultDataAccessException, Exception {
 		 return sqlSession.selectOne(namesapce + ".getById",id);
 	 }

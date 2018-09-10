@@ -14,16 +14,16 @@ import org.springproject.kyu.dto.UserCommentDto;
 import org.springproject.kyu.mapper.sqlprovider.UserCommentSQLProvider;
 
 public interface UserCommentMapper {
+	
+	@SelectProvider(type=UserCommentSQLProvider.class,method="makeSelectQuery")
+	public int getCountByProjectId(Map<String,Object> params);
 
-		@Select(SELECT_COUNT_BY_PROJECT_ID)
-		public int getCountByProjectId(@Param("projectId") int ProjectId);
+	@Select(SELECT_SCORE_AVG_BY_PROJECT_ID)
+	public float getScoreAvgByProjectId(@Param("projectId") int ProjectId);
+	
+	@SelectProvider(type=UserCommentSQLProvider.class,method="makeSelectQuery")
+	public List<UserCommentDto> getRecoreds(Map<String,Object> params);
 		
-		@Select(SELECT_SCORE_AVG_BY_PROJECT_ID)
-		public float getScoreAvgByProjectId(@Param("projectId") int ProjectId);
-		
-		@SelectProvider(type=UserCommentSQLProvider.class,method="makeSelectQuery")
-		public List<UserCommentDto> getRecoreds(Map<String,Object> params);
-		
-		@Insert(INSERT)
-		public int add(UserCommentDto data);
+	@Insert(INSERT)
+	public int add(UserCommentDto data);
 }

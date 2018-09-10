@@ -65,16 +65,14 @@
 					<ul class="actions">
 							<li><select id="searchType">
 									<option value="none">- 검색 종류 -</option>
-									<option value="email">이메일</option>
 									<option value="content">내용</option>
 									<option value="score">점수</option>
-									<option value="commentType">덧글종류</option>
-									<option value="registerDate">등록날짜</option>
+									<option value="type">덧글종류</option>
+									<option value="createDate">등록날짜</option>
 								</select>
 							</li>
 					
-								<li><input type="text" id="keyword" value="" placeholder="입력"
-									maxlength="15"></li>
+								<li id="searchValue"></li>
 
 								<li><input type="button" id="searchBtn" value="찾기"></li>
 								<li><input type="button" id="clearSearchBtn" value="찾기값 초기화"></li>
@@ -133,12 +131,76 @@
 			ajaxComment("api/commentList",1);
 			
 			$("#searchBtn").on("click",function(){
+				
+				var test = $("#searchType option:selected").val();
+				if( test == 'createDate'){
+					var date = $("#keyword-year option:selected").val() + "-" +
+					$("#keyword-month option:selected").val() + "-" +
+					$("#keyword-days option:selected").val();
+					
+					$("#keyword").val(date);
+				}
+
+				
 				ajaxComment("api/searchComment",1);
 			});
 			
+			$("#searchType").on("change",function(){
+				
+				var element = '';
+				
+				switch( this.selectedIndex ){
+				case 1:
+					element = '<input type="text" id="keyword" value="" placeholder="내용" maxlength="15">';
+					break;
+				case 2:
+					element = '<select id="keyword">'
+						+ '<option value="1">1.0</option>'
+						+ '<option value="2">2.0</option>'
+						+ '<option value="3">3.0</option>'
+						+ '<option value="4">4.0</option>'
+						+ '<option value="5">5.0</option>'
+						+ '</select>';
+					break;
+				case 3:
+					element = '<select id="keyword">'
+						+ '<option value="응원">응원</option>'
+						+ '<option value="칭찬">칭찬</option>'
+						+ '<option value="비난">비난</option>'
+						+ '<option value="충고">충고</option>'
+						+ '<option value="버그">버그</option>'
+						+ '</select>';
+					break;
+				case 4:
+					element = '<select id="keyword-year">'
+						for(var i = 2018; i <= 2019; i++ ){
+							element += '<option value="' + i + '">'+ i +' 년</option>';
+						}
+						element += '</select>';
+					
+						element += '<select id="keyword-month">';
+						for(var i = 1; i <= 12; i++ ){
+							element += '<option value="' + i + '">'+ i +' 월</option>';
+						}
+						element += '</select>';
+						
+						element += '<select id="keyword-days">';
+							for(var i = 1; i <= 31; i++ ){
+								element += '<option value="' + i + '">'+ i +' 일</option>';
+							}
+						element += '</select>';
+					
+						element += '<input type="hidden" id="keyword">';
+					break;
+				}
+				
+				$('#searchValue').html(element);
+			});
+			
+			
 			$("#clearSearchBtn").on("click",function(){
 				$("#searchType").find('option:first').attr('selected', 'selected');
-				$("#keyword").val('');
+				$("#searchValue").empty();
 				ajaxComment("api/clearSearch",1);
 			});
 			
@@ -288,7 +350,7 @@
 			var test = getCookie("searchType");
 			var test1 = getCookie("keyword");
 			if( getCookie("searchType") && getCookie("keyword") ){
-				ajaxComment("api/searchComment",pageNum);
+				ajaxComment("api/searchCommentList",pageNum);
 			}else{
 				ajaxComment("api/commentList",pageNum);
 			}

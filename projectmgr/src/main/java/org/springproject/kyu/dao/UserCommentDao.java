@@ -3,12 +3,10 @@ package org.springproject.kyu.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
-import org.springproject.kyu.dto.CommentPageDto;
 import org.springproject.kyu.dto.UserCommentDto;
 
 @Repository
@@ -26,9 +24,10 @@ public class UserCommentDao {
 		return sqlSession.selectList(namesapce + ".getRecoreds",params);
 	}
 	
-	public int selectCountByPorjectId(int ProjectId) throws Exception{
-		return sqlSession.selectOne(namesapce + ".getCountByProjectId", ProjectId);
+	public int selectCountByPorjectId(Map<String,Object> params) throws Exception{
+		return sqlSession.selectOne(namesapce + ".getCountByProjectId", params);
 	}
+	
 	
 	public float selectScoreAvgByPorjectId(int ProjectId) throws Exception{
 		return sqlSession.selectOne(namesapce + ".getScoreAvgByProjectId", ProjectId);

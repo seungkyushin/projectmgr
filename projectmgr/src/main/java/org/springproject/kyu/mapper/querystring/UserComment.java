@@ -13,7 +13,7 @@ public class UserComment {
 		public static final String SELECT_BY_PROJECT_ID = SELECT_ALL + "WHERE project_id=#{projectId} AND show_check='off'";
 		public static final String SELECT_BY_VISITER_ID = SELECT_ALL + " WHERE visiter_id=#{id} AND show_check='off'";
 																		 
-		public static final String SELECT_COUNT_BY_PROJECT_ID = "SELECT COUNT(*) FROM" + TABLE_NAME + "WHERE project_id=#{id} AND show_check='off'";
+		public static final String SELECT_COUNT_BY_PROJECT_ID = "SELECT COUNT(*) FROM" + TABLE_NAME + "WHERE project_id=#{projectId} AND show_check='off'";
 		public static final String SELECT_SCORE_AVG_BY_PROJECT_ID = "SELECT avg(score) FROM" + TABLE_NAME + "WHERE project_id=#{id} AND show_check='off'";
 		/*******************************************************************************************/
 		
