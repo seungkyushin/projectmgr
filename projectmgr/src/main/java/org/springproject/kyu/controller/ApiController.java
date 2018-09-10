@@ -128,7 +128,6 @@ public class ApiController {
 		cookieKeyword.setPath("/");
 		response.addCookie(cookieKeyword);
 		
-		
 		return getUserComments(commentPage, search);
 	}
 	
